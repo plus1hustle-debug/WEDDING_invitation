@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Wedding Invitation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Estetika Pernikahan -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Konfigurasi Font Custom */
+    .font-serif { font-family: 'Cormorant Garamond', serif; }
+    .font-script { font-family: 'Great Vibes', cursive; }
+    .font-sans { font-family: 'Inter', sans-serif; }
+
+    /* Palet Warna Tema (Sage Green & Gold) */
+    :root {
+      --sage-100: #f0f4f0;
+      --sage-800: #2c402e;
+      --gold-main: #d4af37;
+    }
+
+    body { background-color: var(--sage-100); color: var(--sage-800); }
+    
+    /* Efek Cover Overlay yang akan dibuka */
+    #coverOverlay {
+      position: fixed; inset: 0; z-index: 50;
+      background: linear-gradient(rgba(44, 64, 46, 0.6), rgba(44, 64, 46, 0.8)), url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') center/cover;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+    .slide-up { transform: translateY(-100%); }
+
+    /* Animasi Daun Jatuh (Parallax ringan) */
+    .leaf {
+      position: absolute; width: 20px; height: 20px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23d4af37"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>');
+      background-size: cover; animation: fall linear infinite; opacity: 0.3; pointer-events: none;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg); }
+      100% { transform: translateY(110vh) rotate(360deg); }
+    }
+
+    /* Scrollbar Sembunyi untuk Galeri */
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Card Glassmorphism Tiket */
+    .glass-ticket {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 10px 40px -10px rgba(44, 64, 46, 0.15);
+    }
+
+    /* Message Modal */
+    #customToast { transition: opacity 0.3s ease, transform 0.3s ease; }
+    .toast-hidden { opacity: 0; transform: translateY(-20px); pointer-events: none; }
+    .toast-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  </style>
+</head>
+<body class="font-sans antialiased overflow-hidden">
+
+  <!-- AUDIO BGM -->
+  <audio id="bgmAudio" loop>
+    <source src="" id="bgmSource" type="audio/mpeg">
+  </audio>
+
+  <!-- COVER OVERLAY (Membuka Undangan) -->
+  <div id="coverOverlay">
+    <div class="text-center text-white px-6">
+      <p class="text-sm tracking-widest uppercase font-sans mb-3 opacity-80">The Wedding Of</p>
+      <h1 class="text-6xl font-script mb-8 text-[#d4af37] drop-shadow-lg" id="coverNames">Romeo & Juliet</h1>
+      <p class="font-sans text-sm mb-2 opacity-90">Kpd Yth. Bapak/Ibu/Saudara/i</p>
+      <h2 class="text-2xl font-serif font-bold mb-8 border-b border-[#d4af37] pb-2 inline-block" id="guestNameTarget">Tamu Kehormatan</h2>
+      <br>
+      <button onclick="openInvitation()" class="bg-[#d4af37] hover:bg-[#b8952b] text-white px-8 py-3 rounded-full font-sans text-sm tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+        Buka Undangan
+      </button>
+    </div>
+  </div>
+
+  <!-- CONTAINER UTAMA -->
+  <div id="mainContent" class="max-w-md mx-auto bg-[#f0f4f0] min-h-screen relative shadow-2xl pb-20">
+    
+    <!-- Animasi Daun -->
+    <div id="leafContainer" class="fixed inset-0 pointer-events-none z-0 overflow-hidden max-w-md mx-auto"></div>
+
+    <section class="relative h-[85vh] flex flex-col justify-center items-center text-center p-8 bg-gradient-to-b from-[#2c402e]/10 to-transparent z-10">
+      <p class="font-sans text-xs tracking-[0.3em] uppercase text-[#2c402e] mb-4">Pernikahan Suci</p>
+      <h1 class="text-7xl font-script text-[#2c402e] leading-tight mb-4" id="heroNames">Romeo<br><span class="text-3xl font-serif text-[#d4af37]">&</span><br>Juliet</h1>
+      <div class="w-16 h-[1px] bg-[#d4af37] my-6"></div>
+      <p class="font-serif italic text-lg text-[#2c402e] max-w-xs leading-relaxed">
+        "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu isteri-isteri dari jenismu sendiri..."
+      </p>
+    </section>
+
+    <section class="py-12 px-6 z-10 relative text-center">
+      <h3 class="text-2xl font-serif text-[#2c402e] mb-8 font-bold">Waktu Menuju Bahagia</h3>
+      <div class="flex justify-center gap-4">
+        <div class="w-16 h-16 rounded-xl bg-white shadow-md flex flex-col items-center justify-center border border-gray-100">
+          <span class="text-xl font-serif font-bold text-[#d4af37]" id="cd-days">00</span>
+          <span class="text-[9px] uppercase tracking-wider font-sans text-gray-500">Hari</span>
+        </div>
+        <div class="w-16 h-16 rounded-xl bg-white shadow-md flex flex-col items-center justify-center border border-gray-100">
+          <span class="text-xl font-serif font-bold text-[#d4af37]" id="cd-hours">00</span>
+          <span class="text-[9px] uppercase tracking-wider font-sans text-gray-500">Jam</span>
+        </div>
+        <div class="w-16 h-16 rounded-xl bg-white shadow-md flex flex-col items-center justify-center border border-gray-100">
+          <span class="text-xl font-serif font-bold text-[#d4af37]" id="cd-minutes">00</span>
+          <span class="text-[9px] uppercase tracking-wider font-sans text-gray-500">Menit</span>
+        </div>
+        <div class="w-16 h-16 rounded-xl bg-white shadow-md flex flex-col items-center justify-center border border-gray-100">
+          <span class="text-xl font-serif font-bold text-[#d4af37]" id="cd-seconds">00</span>
+          <span class="text-[9px] uppercase tracking-wider font-sans text-gray-500">Detik</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallerySection" class="py-12 hidden z-10 relative">
+      <h3 class="text-2xl font-serif text-[#2c402e] mb-6 font-bold text-center">Momen Kami</h3>
+      <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 px-6 pb-6 scrollbar-hide" id="galleryContainer">
+        <!-- Foto digenerate via JS -->
+      </div>
+    </section>
+
+    <section class="py-10 px-6 z-10 relative">
+      <div class="glass-ticket rounded-3xl p-8 text-center relative overflow-hidden">
+        <div class="absolute -right-8 -top-8 w-24 h-24 bg-[#d4af37]/20 rounded-full blur-xl"></div>
+        
+        <h3 class="text-2xl font-serif text-[#2c402e] mb-2 font-bold">Akses Masuk (QR)</h3>
+        <p class="text-xs font-sans text-gray-500 mb-6">Tunjukkan QR Code ini pada petugas buku tamu di lokasi acara.</p>
+
+        <!-- Form Cari Tiket -->
+        <form id="searchFormArea" onsubmit="event.preventDefault(); performSearch();" class="space-y-4">
+          <input type="text" id="searchInput" placeholder="Ketik Nama Anda..." autocomplete="off" required
+                 class="w-full px-5 py-4 rounded-xl border border-gray-200 focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30 outline-none text-center font-sans text-sm bg-white/70">
+          <button type="submit" id="btnSearch" class="bg-[#2c402e] hover:bg-[#1a261b] text-white w-full py-4 rounded-xl font-bold font-sans text-sm transition-all shadow-lg flex justify-center items-center gap-2">
+            Cari Undangan Saya
+          </button>
+        </form>
+
+        <!-- Loading -->
+        <div id="loadingArea" class="hidden mt-4 py-4">
+          <div class="w-8 h-8 border-4 border-gray-200 border-t-[#d4af37] rounded-full animate-spin mx-auto"></div>
+        </div>
+
+        <!-- Hasil Tiket (QR) -->
+        <div id="resultArea" class="hidden mt-6 pt-6 border-t border-gray-200 fade-in">
+          <div class="bg-white p-4 rounded-2xl shadow-inner inline-block mb-4 border border-gray-100">
+            <img id="qrImageDisplay" src="" alt="QR Code Tamu" class="w-40 h-40 object-contain mx-auto hidden">
+            <p id="qrFallbackText" class="text-xs text-red-500 hidden mt-2">QR Code belum tersedia.</p>
+          </div>
+          <h2 id="guestNameDisplay" class="text-xl font-serif font-bold text-[#2c402e] mb-1">Nama Tamu</h2>
+          <p id="guestIdDisplay" class="text-xs font-sans text-[#d4af37] tracking-widest uppercase font-bold mb-5">ID</p>
+          
+          <a id="downloadLink" href="#" target="_top" class="hidden justify-center items-center gap-2 w-full bg-gray-100 hover:bg-gray-200 text-[#2c402e] py-3 rounded-xl font-bold font-sans text-xs transition-all border border-gray-300">
+            Download PDF Undangan
+          </a>
+          
+          <button type="button" onclick="resetSearch()" class="mt-4 text-[11px] font-sans text-gray-400 underline uppercase tracking-wider">
+            Ganti Nama Tamu
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="py-10 px-6 z-10 relative text-center pb-24">
+      <h3 class="text-2xl font-serif text-[#2c402e] mb-2 font-bold">Amplop Digital</h3>
+      <p class="text-xs font-sans text-gray-500 mb-6">Doa restu Anda merupakan karunia yang sangat berarti bagi kami.</p>
+      
+      <button onclick="toggleEnvelope()" class="bg-white border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-white px-8 py-3 rounded-full font-sans text-sm transition-all shadow-sm flex items-center justify-center gap-2 mx-auto">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        Kirim Hadiah
+      </button>
+
+      <!-- Modal Rekening -->
+      <div id="envelopeModal" class="hidden mt-6 bg-white p-6 rounded-2xl shadow-lg border border-gray-100 fade-in text-left">
+        <p class="font-sans text-xs text-gray-500 uppercase tracking-wider mb-1">BCA - Romeo Montague</p>
+        <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
+          <span class="font-mono font-bold text-lg text-[#2c402e]" id="rekNumber">1234567890</span>
+          <button onclick="copyRekening()" class="text-xs bg-[#d4af37] text-white px-3 py-1.5 rounded-md hover:bg-[#b8952b]">Salin</button>
+        </div>
+      </div>
+    </section>
+    
+  </div>
+
+  <!-- Custom Alert Toast -->
+  <div id="customToast" class="fixed top-5 left-1/2 transform -translate-x-1/2 z-[100] toast-hidden bg-red-600 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 text-sm font-sans font-medium w-11/12 max-w-sm">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+    <span id="toastMsg">Pesan Error</span>
+  </div>
+
+  <script>
+    // =========================================================================
+    // KONFIGURASI PENTING (Ganti dengan URL Google Apps Script Anda!)
+    // =========================================================================
+    const API_URL = "ISI_DENGAN_URL_WEB_APP_GOOGLE_APPS_SCRIPT_ANDA"; 
+
+    // --- LOGIKA UTAMA UI ---
+    document.addEventListener("DOMContentLoaded", () => {
+      createLeaves();
+      
+      // Ambil nama dari Parameter URL (contoh: ?to=Budi+Keluarga)
+      const urlParams = new URLSearchParams(window.location.search);
+      const guestTo = urlParams.get('to');
+      if (guestTo) {
+        document.getElementById('guestNameTarget').innerText = guestTo;
+        document.getElementById('searchInput').value = guestTo; // Pre-fill kotak pencarian
+      }
+
+      fetchInitData();
+    });
+
+    // --- FITUR MUKA (Buka Undangan & Audio) ---
+    function openInvitation() {
+      document.getElementById('coverOverlay').classList.add('slide-up');
+      document.body.classList.remove('overflow-hidden'); // Izinkan scroll
+      
+      // Putar musik (Browser policy requires interaction first)
+      const audio = document.getElementById('bgmAudio');
+      if(audio.src && audio.src !== window.location.href) {
+         audio.play().catch(e => console.log("Auto-play diblokir browser."));
+      }
+    }
+
+    // --- FETCH DATA KE BACKEND (API) ---
+    async function fetchInitData() {
+      try {
+        if (API_URL.includes("ISI_DENGAN_URL")) {
+          setupMockup(); return;
+        }
+
+        const res = await fetch(`${API_URL}?action=getInitData`);
+        const data = await res.json();
+
+        if (data.success) {
+          document.getElementById('coverNames').innerHTML = `${data.groomName} & ${data.brideName}`;
+          document.getElementById('heroNames').innerHTML = `${data.groomName}<br><span class="text-3xl font-serif text-[#d4af37]">&</span><br>${data.brideName}`;
+          
+          if(data.coverUrl) document.getElementById('coverOverlay').style.backgroundImage = `linear-gradient(rgba(44, 64, 46, 0.6), rgba(44, 64, 46, 0.8)), url('${data.coverUrl}')`;
+          if(data.bgmUrl) document.getElementById('bgmAudio').src = data.bgmUrl;
+          if(data.eventDateTime) initCountdown(data.eventDateTime);
+          
+          // Setup Galeri
+          if(data.gallery && data.gallery.length > 0) {
+            const galContainer = document.getElementById('galleryContainer');
+            document.getElementById('gallerySection').classList.remove('hidden');
+            let html = '';
+            data.gallery.forEach(url => {
+              html += `<div class="snap-center shrink-0 w-64 h-96 rounded-2xl overflow-hidden shadow-xl border-4 border-white"><img src="${url}" class="w-full h-full object-cover"></div>`;
+            });
+            galContainer.innerHTML = html;
+          }
+        }
+      } catch (err) {
+        console.error("Gagal memuat konfigurasi utama.", err);
+        setupMockup(); // Fallback
+      }
+    }
+
+    // --- PENCARIAN TIKET (QR CODE) ---
+    async function performSearch() {
+      const query = document.getElementById('searchInput').value.trim();
+      if (!query) { showToast("Silakan masukkan nama Anda."); return; }
+
+      const btn = document.getElementById('btnSearch');
+      const load = document.getElementById('loadingArea');
+      const resArea = document.getElementById('resultArea');
+      const form = document.getElementById('searchFormArea');
+
+      btn.disabled = true;
+      form.classList.add('hidden');
+      resArea.classList.add('hidden');
+      load.classList.remove('hidden');
+
+      if (API_URL.includes("ISI_DENGAN_URL")) {
+        // Mode Simulasi
+        setTimeout(() => {
+          load.classList.add('hidden');
+          resArea.classList.remove('hidden');
+          btn.disabled = false;
+          
+          document.getElementById('guestNameDisplay').innerText = query;
+          document.getElementById('guestIdDisplay').innerText = "VIP-001";
+          
+          const qrImg = document.getElementById('qrImageDisplay');
+          qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${query}`;
+          qrImg.classList.remove('hidden');
+        }, 1000);
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_URL}?action=search&query=${encodeURIComponent(query)}`);
+        const data = await res.json();
+
+        load.classList.add('hidden');
+        btn.disabled = false;
+
+        if (data.success) {
+          resArea.classList.remove('hidden');
+          document.getElementById('guestNameDisplay').innerText = data.name;
+          document.getElementById('guestIdDisplay').innerText = data.id;
+          
+          const qrImg = document.getElementById('qrImageDisplay');
+          const qrText = document.getElementById('qrFallbackText');
+          
+          if (data.qrUrl) {
+            let safeUrl = data.qrUrl.includes("drive.google.com") ? data.qrUrl.replace("export=view", "export=download") : data.qrUrl;
+            qrImg.src = safeUrl;
+            qrImg.classList.remove('hidden');
+            qrText.classList.add('hidden');
+          } else {
+            qrImg.classList.add('hidden');
+            qrText.classList.remove('hidden');
+          }
+
+          const btnDl = document.getElementById('downloadLink');
+          if(data.ticketUrl) {
+            btnDl.href = data.ticketUrl;
+            btnDl.style.display = 'flex';
+          } else {
+            btnDl.style.display = 'none';
+          }
+        } else {
+          form.classList.remove('hidden');
+          showToast(data.message || "Nama tidak ditemukan di daftar tamu.");
+        }
+      } catch (err) {
+        load.classList.add('hidden');
+        form.classList.remove('hidden');
+        btn.disabled = false;
+        showToast("Gagal menghubungi server. Coba lagi nanti.");
+      }
+    }
+
+    function resetSearch() {
+      document.getElementById('searchInput').value = "";
+      document.getElementById('resultArea').classList.add('hidden');
+      document.getElementById('searchFormArea').classList.remove('hidden');
+    }
+
+    // --- FUNGSI PENDUKUNG ---
+    function showToast(msg) {
+      const toast = document.getElementById('customToast');
+      document.getElementById('toastMsg').innerText = msg;
+      toast.classList.remove('toast-hidden');
+      toast.classList.add('toast-visible');
+      setTimeout(() => {
+        toast.classList.remove('toast-visible');
+        toast.classList.add('toast-hidden');
+      }, 3000);
+    }
+
+    function toggleEnvelope() {
+      const modal = document.getElementById('envelopeModal');
+      modal.classList.toggle('hidden');
+    }
+
+    function copyRekening() {
+      const rek = document.getElementById('rekNumber').innerText;
+      navigator.clipboard.writeText(rek).then(() => {
+        alert("Nomor rekening berhasil disalin!");
+      }).catch(err => {
+        // Fallback for older browsers
+        const temp = document.createElement("input");
+        document.body.appendChild(temp);
+        temp.value = rek; temp.select(); document.execCommand("copy");
+        document.body.removeChild(temp);
+        alert("Nomor rekening berhasil disalin!");
+      });
+    }
+
+    function initCountdown(dateStr) {
+      const safeDateStr = dateStr.replace(/-/g, '/');
+      const targetDate = new Date(safeDateStr).getTime();
+      if (isNaN(targetDate)) return;
+
+      setInterval(() => {
+        const distance = targetDate - new Date().getTime();
+        if (distance < 0) return;
+        
+        document.getElementById("cd-days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+        document.getElementById("cd-hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+        document.getElementById("cd-minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+        document.getElementById("cd-seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+      }, 1000);
+    }
+
+    function createLeaves() {
+      const container = document.getElementById('leafContainer');
+      for (let i = 0; i < 15; i++) {
+        let leaf = document.createElement('div');
+        leaf.className = 'leaf';
+        leaf.style.left = Math.random() * 100 + 'vw';
+        leaf.style.animationDuration = Math.random() * 10 + 10 + 's';
+        leaf.style.animationDelay = Math.random() * 5 + 's';
+        container.appendChild(leaf);
+      }
+    }
+
+    function setupMockup() {
+      initCountdown("2026-12-25 09:00");
+      document.getElementById('gallerySection').classList.remove('hidden');
+      document.getElementById('galleryContainer').innerHTML = `
+        <div class="snap-center shrink-0 w-64 h-96 rounded-2xl overflow-hidden shadow-xl border-4 border-white">
+          <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover">
+        </div>
+        <div class="snap-center shrink-0 w-64 h-96 rounded-2xl overflow-hidden shadow-xl border-4 border-white">
+          <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover">
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
