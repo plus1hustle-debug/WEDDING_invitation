@@ -45,11 +45,9 @@
 
     .glass-ticket { backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 10px 40px -10px rgba(0,0,0, 0.15); }
 
-    /* --- MESIN ANIMASI AI --- */
     .ai-ornament-base {
       position: absolute; width: 24px; height: 24px; background-size: contain; background-repeat: no-repeat; opacity: 0.25; pointer-events: none; z-index: 0;
     }
-    /* 1. Gaya Jatuh (Falling) */
     @keyframes anim-falling { 
       0% { transform: translateY(-10vh) rotate(0deg) translateX(0); opacity: 0; } 
       10% { opacity: 0.3; }
@@ -58,21 +56,18 @@
     }
     .anim-falling { animation: anim-falling linear infinite; }
     
-    /* 2. Gaya Melayang (Floating) */
     @keyframes anim-floating { 
       0%, 100% { transform: translateY(0) rotate(-10deg); opacity: 0.2; } 
       50% { transform: translateY(-30px) rotate(10deg); opacity: 0.4; } 
     }
     .anim-floating { animation: anim-floating ease-in-out infinite; }
     
-    /* 3. Gaya Berkedip (Pulsing) */
     @keyframes anim-pulsing { 
       0%, 100% { transform: scale(0.8); opacity: 0.1; } 
       50% { transform: scale(1.3); opacity: 0.5; } 
     }
     .anim-pulsing { animation: anim-pulsing ease-in-out infinite; }
 
-    /* Swiper & Fancybox Styles */
     .swiper-slide { width: 75%; max-width: 320px; aspect-ratio: 3/4; }
     .swiper-pagination-bullet { background: var(--primary) !important; opacity: 0.5; }
     .swiper-pagination-bullet-active { opacity: 1; transform: scale(1.3); }
@@ -80,6 +75,7 @@
     .animate-kenburns:hover img { animation: slowZoom 10s ease-in-out infinite alternate; }
   </style>
 </head>
+
 <body class="theme-font-body antialiased overflow-hidden theme-bg-main">
 
   <audio id="bgmAudio" loop><source src="" id="bgmSource" type="audio/mpeg"></audio>
@@ -87,7 +83,7 @@
   <!-- COVER HALAMAN DEPAN -->
   <div id="coverOverlay">
     <div class="text-center text-white px-6">
-      <p class="text-sm tracking-widest uppercase mb-3 opacity-80 theme-font-body">The Wedding Of</p>
+      <p class="text-sm tracking-widest uppercase mb-3 opacity-80 theme-font-body" id="agendaTitle">The Wedding Of</p>
       <h1 class="text-6xl mb-8 drop-shadow-2xl theme-font-script theme-text-primary" id="coverNames">Romeo & Juliet</h1>
       <p class="text-sm mb-2 opacity-90 theme-font-body">Kpd Yth. Bapak/Ibu/Saudara/i</p>
       <h2 class="text-2xl font-bold mb-8 border-b pb-2 inline-block theme-font-title theme-border-primary" id="guestNameTarget">Tamu Kehormatan</h2>
@@ -104,22 +100,89 @@
 
     <!-- HERO & AI COPYWRITING SECTION -->
     <section class="relative min-h-[90vh] flex flex-col justify-center items-center text-center p-8 z-10">
-      
-      <!-- AI Prologue Text (Islami/Nasrani/Adat) -->
-      <p id="dynamicPrologue" class="text-xs mb-8 opacity-80 theme-text-dark theme-font-body leading-relaxed max-w-sm italic">
+      <p id="dynamicPrologue" class="text-xs mb-8 opacity-80 theme-text-dark leading-relaxed max-w-sm italic">
         "Maha Suci Tuhan yang telah menciptakan makhluk-Nya berpasang-pasangan..."
       </p>
 
-      <p class="text-xs tracking-[0.3em] uppercase mb-4 theme-text-dark theme-font-body font-bold">Pernikahan Suci</p>
-      <h1 class="text-7xl leading-tight mb-4 theme-font-script theme-text-dark" id="heroNames">
-        Romeo<br><span class="text-3xl theme-font-title theme-text-primary">&</span><br>Juliet
+      <p class="text-xs tracking-[0.3em] uppercase mb-4 theme-text-dark font-bold">Pernikahan Suci</p>
+      <h1 class="text-7xl leading-tight mb-4 theme-font-title theme-text-dark" id="heroNames">
+        Romeo<br><span class="text-3xl theme-text-primary">&</span><br>Juliet
       </h1>
       <div class="w-16 h-[1px] my-6 theme-bg-primary"></div>
       
-      <!-- AI Custom Quote -->
       <p id="dynamicQuote" class="text-lg max-w-xs leading-relaxed theme-font-title theme-text-dark font-medium">
         "Cinta sejati tidak memiliki akhir yang bahagia, karena cinta sejati tidak pernah berakhir."
       </p>
+    </section>
+
+    <!-- PROFIL MEMPELAI -->
+    <section class="py-16 px-6 z-10 relative text-center">
+      <h3 class="text-3xl mb-12 font-bold theme-font-title theme-text-primary">Sang Mempelai</h3>
+      
+      <div class="flex flex-col gap-12">
+        <div class="fade-in">
+          <div class="w-32 h-32 mx-auto rounded-full p-1 border-2 border-dashed theme-border-primary mb-4 relative">
+             <div class="w-full h-full rounded-full bg-black/5 overflow-hidden flex items-center justify-center">
+                <svg class="w-16 h-16 text-black/20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+             </div>
+          </div>
+          <h2 id="groomFullName" class="text-2xl font-bold theme-font-title theme-text-dark mb-1">Nama Pria</h2>
+          <p id="groomParents" class="text-[11px] opacity-70 uppercase tracking-wider theme-text-dark">Putra dari...</p>
+        </div>
+
+        <div class="text-4xl theme-font-title theme-text-primary opacity-50">&</div>
+
+        <div class="fade-in">
+          <div class="w-32 h-32 mx-auto rounded-full p-1 border-2 border-dashed theme-border-primary mb-4 relative">
+             <div class="w-full h-full rounded-full bg-black/5 overflow-hidden flex items-center justify-center">
+                <svg class="w-16 h-16 text-black/20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+             </div>
+          </div>
+          <h2 id="brideFullName" class="text-2xl font-bold theme-font-title theme-text-dark mb-1">Nama Wanita</h2>
+          <p id="brideParents" class="text-[11px] opacity-70 uppercase tracking-wider theme-text-dark">Putri dari...</p>
+        </div>
+      </div>
+      
+      <!-- Instagram Handle -->
+      <div id="igContainer" class="mt-8 hidden">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full theme-bg-card border theme-border-primary shadow-sm text-xs font-semibold theme-text-dark">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.361-.2 6.78-2.618 6.98-6.98.058-1.28.072-1.689.072-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          <span id="igHandleDisplay">@wedding</span>
+        </span>
+      </div>
+    </section>
+
+    <!-- JADWAL ACARA -->
+    <section class="py-12 px-6 z-10 relative">
+      <h3 class="text-3xl mb-8 font-bold text-center theme-font-title theme-text-primary">Rangkaian Acara</h3>
+      
+      <div class="flex flex-col gap-6">
+        <div class="theme-bg-card p-6 rounded-3xl shadow-lg border border-black/5 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-20 h-20 bg-black/5 rounded-bl-[100px] pointer-events-none"></div>
+          <h4 class="text-xl font-bold theme-font-title theme-text-dark mb-2">Akad Nikah</h4>
+          <div class="flex items-start gap-3 mb-3 text-sm theme-text-dark opacity-80">
+            <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span id="akadTimeDisplay">-</span>
+          </div>
+          <div class="flex items-start gap-3 text-sm theme-text-dark opacity-80">
+            <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span id="akadLocDisplay">-</span>
+          </div>
+        </div>
+
+        <div class="theme-bg-card p-6 rounded-3xl shadow-lg border border-black/5 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-20 h-20 theme-bg-primary opacity-10 rounded-bl-[100px] pointer-events-none"></div>
+          <h4 class="text-xl font-bold theme-font-title theme-text-primary mb-2">Resepsi</h4>
+          <div class="flex items-start gap-3 mb-3 text-sm theme-text-dark opacity-80">
+            <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span id="resepsiTimeDisplay">-</span>
+          </div>
+          <div class="flex items-start gap-3 text-sm theme-text-dark opacity-80">
+            <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span id="resepsiLocDisplay">-</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- HITUNG MUNDUR -->
@@ -256,63 +319,141 @@
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbwJO9TubcqdbOqumUNYDcGm5MJerHVVhL1f0oRY2J1y9-GkdyFa5Xrd8cEeVvS1jH1cgQ/exec"; 
+    // ⚠️ GANTI LINK DI BAWAH INI DENGAN URL GOOGLE APPS SCRIPT ANDA
+    const API_URL = "https://script.google.com/macros/s/AKfycbx034jduMJg8RMHD0zzirH-l4AhPMy3lDvuLIQhgUuKCLAJzwk70aeqmw7qZwdI7tifWg/exec"; 
     const CACHE_KEY = 'guest_ticket_id_cache';
 
-    
-    // 1. Fungsi Buka Undangan & BGM
+    // 1. Logika Buka Undangan (Menghilangkan Lock Scroll)
     function openInvitation() {
-      document.getElementById('coverOverlay').classList.add('slide-up');
-      
-      // PERBAIKAN: Buka kunci scroll halaman agar tamu bisa melihat ke bawah
       document.body.classList.remove('overflow-hidden');
-      // Mencegah layar goyang ke samping
-      document.body.classList.add('overflow-x-hidden'); 
-      
-      const audio = document.getElementById('bgmAudio');
-      if (audio.src && !audio.src.includes('undefined')) {
-        audio.play().catch(e => console.log("Autoplay ditahan browser, tekan layar untuk memutar musik."));
-      }
+      document.getElementById('coverOverlay').classList.add('slide-up');
+      const bgm = document.getElementById('bgmAudio');
+      if(bgm.src && bgm.src !== window.location.href) { bgm.play().catch(e => console.log("Auto-play diblokir")); }
     }
 
-    // 2. Fungsi Hitung Mundur (Countdown)
+    // 2. Logika Hitung Mundur (Countdown)
     function initCountdown(targetDateStr) {
-      const targetDate = new Date(targetDateStr.replace(/-/g, '/')).getTime();
+      const safeDateStr = targetDateStr.replace(/-/g, '/');
+      const targetDate = new Date(safeDateStr).getTime();
       if (isNaN(targetDate)) return;
-      
-      const timerInterval = setInterval(() => {
-        const distance = targetDate - new Date().getTime();
-        if (distance < 0) { clearInterval(timerInterval); return; }
-        document.getElementById("cd-days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-        document.getElementById("cd-hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-        document.getElementById("cd-minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-        document.getElementById("cd-seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+
+      setInterval(function() {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+          document.getElementById("cd-days").innerText = "00";
+          document.getElementById("cd-hours").innerText = "00";
+          document.getElementById("cd-minutes").innerText = "00";
+          document.getElementById("cd-seconds").innerText = "00";
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("cd-days").innerText = days.toString().padStart(2, '0');
+        document.getElementById("cd-hours").innerText = hours.toString().padStart(2, '0');
+        document.getElementById("cd-minutes").innerText = minutes.toString().padStart(2, '0');
+        document.getElementById("cd-seconds").innerText = seconds.toString().padStart(2, '0');
       }, 1000);
     }
 
-    // 3. Fungsi Render Galeri 3D
+    // 3. Logika Galeri 3D Carousel (Swiper & Fancybox)
     function renderGallery(urls) {
+      if(!urls || urls.length === 0) return;
+      document.getElementById('gallerySection').classList.remove('hidden');
       const container = document.getElementById('galleryContainer');
       container.innerHTML = '';
-      document.getElementById('gallerySection').classList.remove('hidden');
 
       urls.forEach(url => {
         const slide = document.createElement('div');
-        slide.className = 'swiper-slide rounded-2xl overflow-hidden shadow-xl border-4 border-white animate-kenburns cursor-pointer';
-        slide.innerHTML = `<a href="${url}" data-fancybox="gallery"><img src="${url}" class="w-full h-full object-cover" alt="Gallery"></a>`;
+        slide.className = 'swiper-slide animate-kenburns rounded-3xl overflow-hidden shadow-2xl border-4 theme-border-primary relative cursor-pointer group';
+        
+        slide.innerHTML = `
+          <a data-fancybox="gallery" href="${url}" class="block w-full h-full">
+            <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition duration-500 z-10"></div>
+            <img src="${url}" class="w-full h-full object-cover transform transition duration-700 group-hover:scale-110" alt="Prewedding">
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 opacity-0 group-hover:opacity-100 transition duration-300">
+               <span class="bg-black/50 backdrop-blur-sm text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest border border-white/20">Perbesar</span>
+            </div>
+          </a>
+        `;
         container.appendChild(slide);
       });
 
       new Swiper(".mySwiper", {
         effect: "coverflow", grabCursor: true, centeredSlides: true, slidesPerView: "auto",
-        coverflowEffect: { rotate: 20, stretch: 0, depth: 200, modifier: 1, slideShadows: true },
+        coverflowEffect: { rotate: 20, stretch: 0, depth: 250, modifier: 1, slideShadows: true },
         pagination: { el: ".swiper-pagination", clickable: true },
         autoplay: { delay: 2500, disableOnInteraction: false }
       });
       Fancybox.bind("[data-fancybox]", {});
     }
 
-    // 4. Fungsi Utama Penarik Data API
+    function applyAITheme(themeJsonStr) {
+      try {
+        const theme = JSON.parse(themeJsonStr);
+        
+        const fontUrl = `https://fonts.googleapis.com/css2?family=${theme.fontTitle.replace(/ /g, '+')}:ital,wght@0,400;0,700;1,400&family=${theme.fontScript.replace(/ /g, '+')}&family=${theme.fontBody.replace(/ /g, '+')}:wght@300;400;600&display=swap`;
+        const link = document.createElement('link'); link.href = fontUrl; link.rel = 'stylesheet';
+        document.head.appendChild(link);
+
+        const docStyle = document.documentElement.style;
+        docStyle.setProperty('--bg-main', theme.bgMain);
+        docStyle.setProperty('--bg-card', theme.bgCard || '#ffffff');
+        docStyle.setProperty('--text-dark', theme.textDark);
+        docStyle.setProperty('--primary', theme.primaryColor || theme.primary);
+        docStyle.setProperty('--font-title', `'${theme.fontTitle}', serif`);
+        docStyle.setProperty('--font-script', `'${theme.fontScript}', cursive`);
+        docStyle.setProperty('--font-body', `'${theme.fontBody}', sans-serif`);
+
+        if(theme.prologueText) document.getElementById('dynamicPrologue').innerText = theme.prologueText;
+        if(theme.quoteText) document.getElementById('dynamicQuote').innerText = theme.quoteText;
+
+        const svgPath = theme.ornamentPath || "M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"; 
+        const animType = theme.ornamentAnim || "falling"; 
+        const primaryHex = encodeURIComponent(theme.primaryColor || theme.primary);
+        
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = `.ai-custom-svg { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${primaryHex}"><path d="${svgPath}"/></svg>'); }`;
+        document.head.appendChild(styleSheet);
+        
+        createAIOrnaments(animType);
+
+      } catch (e) { console.error("Gagal membaca JSON Tema AI:", e); }
+    }
+
+    function createAIOrnaments(animType) {
+      const container = document.getElementById('leafContainer');
+      container.innerHTML = ''; 
+      const particleCount = animType === 'pulsing' ? 20 : 12; 
+
+      for (let i = 0; i < particleCount; i++) {
+        let el = document.createElement('div'); 
+        el.className = `ai-ornament-base ai-custom-svg anim-${animType}`;
+        
+        if (animType === 'falling') {
+          el.style.left = Math.random() * 100 + 'vw'; el.style.top = '-5vh';
+          el.style.animationDuration = (Math.random() * 8 + 8) + 's'; el.style.animationDelay = Math.random() * 5 + 's';
+          el.style.width = el.style.height = (Math.random() * 10 + 15) + 'px'; 
+        } 
+        else if (animType === 'floating') {
+          el.style.left = Math.random() * 100 + 'vw'; el.style.top = Math.random() * 90 + 'vh';
+          el.style.animationDuration = (Math.random() * 4 + 4) + 's'; el.style.animationDelay = Math.random() * 3 + 's';
+          el.style.width = el.style.height = (Math.random() * 15 + 20) + 'px';
+        }
+        else {
+          el.style.left = Math.random() * 100 + 'vw'; el.style.top = Math.random() * 100 + 'vh';
+          el.style.animationDuration = (Math.random() * 2 + 2) + 's'; el.style.animationDelay = Math.random() * 2 + 's';
+          el.style.width = el.style.height = (Math.random() * 8 + 12) + 'px';
+        }
+        container.appendChild(el);
+      }
+    }
+
     async function fetchInitData() {
       if (API_URL.includes("ISI_DENGAN_URL")) {
         setupMockup();
@@ -324,24 +465,38 @@
         const data = await res.json();
         
         if (data.success) {
-          // Terapkan Tema AI
           if (data.themeJson) {
              applyAITheme(data.themeJson);
           } else {
-             // Fallback jika AI belum digenerate di Spreadsheet
-             applyAITheme(`{"bgMain":"#fdf8f5","bgCard":"#ffffff","textDark":"#4a3b32","primaryColor":"#d98a6c","fontTitle":"Playfair Display","fontScript":"Dancing Script","fontBody":"Lato","ornamentAnim":"falling"}`);
+             applyAITheme(`{"bgMain":"#fdf8f5","bgCard":"#ffffff","textDark":"#4a3b32","primaryColor":"#d98a6c","fontTitle":"Playfair Display","fontScript":"Great Vibes","fontBody":"Lato","ornamentAnim":"falling"}`);
           }
 
-          // Isi Data Komponen
-          if (data.agendaName) document.querySelector('p.uppercase.mb-3').innerText = data.agendaName;
+          if (data.agendaName) document.getElementById('agendaTitle').innerText = data.agendaName;
           if (data.coverUrl) document.getElementById('coverOverlay').style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('${data.coverUrl}')`;
           
-          if (data.groomName && data.brideName) {
-             document.getElementById('coverNames').innerHTML = `${data.groomName} & ${data.brideName}`;
-             document.getElementById('heroNames').innerHTML = `${data.groomName}<br><span class="text-3xl theme-font-title theme-text-primary">&</span><br>${data.brideName}`;
+          if (data.groomNick && data.brideNick) {
+             document.getElementById('coverNames').innerHTML = `${data.groomNick} & ${data.brideNick}`;
+             document.getElementById('heroNames').innerHTML = `${data.groomNick}<br><span class="text-3xl theme-font-title theme-text-primary">&</span><br>${data.brideNick}`;
+          }
+          
+          if (data.groomFull) document.getElementById('groomFullName').innerText = data.groomFull;
+          if (data.groomParents) document.getElementById('groomParents').innerText = data.groomParents;
+          if (data.brideFull) document.getElementById('brideFullName').innerText = data.brideFull;
+          if (data.brideParents) document.getElementById('brideParents').innerText = data.brideParents;
+          
+          if (data.akadTime) document.getElementById('akadTimeDisplay').innerHTML = data.akadTime.replace(" ", "<br>");
+          if (data.akadLoc) document.getElementById('akadLocDisplay').innerText = data.akadLoc;
+          if (data.resepsiTime) document.getElementById('resepsiTimeDisplay').innerHTML = data.resepsiTime.replace(" ", "<br>");
+          if (data.resepsiLoc) document.getElementById('resepsiLocDisplay').innerText = data.resepsiLoc;
+
+          if (data.igHandle) {
+             document.getElementById('igHandleDisplay').innerText = data.igHandle;
+             document.getElementById('igContainer').classList.remove('hidden');
           }
 
-          if (data.eventDateTime) initCountdown(data.eventDateTime);
+          let targetCountdown = data.akadTime || data.resepsiTime || data.eventDateTime;
+          if (targetCountdown) initCountdown(targetCountdown);
+          
           if (data.bgmUrl) { document.getElementById('bgmSource').src = data.bgmUrl; document.getElementById('bgmAudio').load(); }
           if (data.gallery && data.gallery.length > 0) renderGallery(data.gallery);
           
@@ -385,80 +540,6 @@
       fetchInitData();
     });
 
-    function applyAITheme(themeJsonStr) {
-      try {
-        const theme = JSON.parse(themeJsonStr);
-        
-        // 1. Injeksi Font Google
-        const fontUrl = `https://fonts.googleapis.com/css2?family=${theme.fontTitle.replace(/ /g, '+')}:ital,wght@0,400;0,700;1,400&family=${theme.fontScript.replace(/ /g, '+')}&family=${theme.fontBody.replace(/ /g, '+')}:wght@300;400;600&display=swap`;
-        const link = document.createElement('link'); link.href = fontUrl; link.rel = 'stylesheet';
-        document.head.appendChild(link);
-
-        // 2. Injeksi Variabel Warna CSS
-        const docStyle = document.documentElement.style;
-        docStyle.setProperty('--bg-main', theme.bgMain);
-        docStyle.setProperty('--bg-card', theme.bgCard || '#ffffff');
-        docStyle.setProperty('--text-dark', theme.textDark);
-        docStyle.setProperty('--primary', theme.primaryColor || theme.primary);
-        docStyle.setProperty('--font-title', `'${theme.fontTitle}', serif`);
-        docStyle.setProperty('--font-script', `'${theme.fontScript}', cursive`);
-        docStyle.setProperty('--font-body', `'${theme.fontBody}', sans-serif`);
-
-        // 3. Injeksi Copywriting
-        if(theme.prologueText) document.getElementById('dynamicPrologue').innerText = theme.prologueText;
-        if(theme.quoteText) document.getElementById('dynamicQuote').innerText = theme.quoteText;
-
-        // 4. INJEKSI ORNAMEN AI (AI SVG ILLUSTRATOR)
-        const svgPath = theme.ornamentPath || "M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"; // Default: Daun
-        const animType = theme.ornamentAnim || "falling"; // Default: Jatuh
-        const primaryHex = encodeURIComponent(theme.primaryColor || theme.primary);
-        
-        const styleSheet = document.createElement("style");
-        styleSheet.innerText = `.ai-custom-svg { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${primaryHex}"><path d="${svgPath}"/></svg>'); }`;
-        document.head.appendChild(styleSheet);
-        
-        createAIOrnaments(animType);
-
-      } catch (e) { console.error("Gagal membaca JSON Tema AI:", e); }
-    }
-
-    function createAIOrnaments(animType) {
-      const container = document.getElementById('leafContainer');
-      container.innerHTML = ''; // Hapus sisa ornamen lama
-      
-      const particleCount = animType === 'pulsing' ? 20 : 12; // Lebih banyak jika berkedip
-
-      for (let i = 0; i < particleCount; i++) {
-        let el = document.createElement('div'); 
-        el.className = `ai-ornament-base ai-custom-svg anim-${animType}`;
-        
-        // Pengacakan posisi fisik
-        if (animType === 'falling') {
-          el.style.left = Math.random() * 100 + 'vw';
-          el.style.top = '-5vh';
-          el.style.animationDuration = (Math.random() * 8 + 8) + 's';
-          el.style.animationDelay = Math.random() * 5 + 's';
-          el.style.width = el.style.height = (Math.random() * 10 + 15) + 'px'; // Ukuran bervariasi
-        } 
-        else if (animType === 'floating') {
-          el.style.left = Math.random() * 100 + 'vw';
-          el.style.top = Math.random() * 90 + 'vh';
-          el.style.animationDuration = (Math.random() * 4 + 4) + 's';
-          el.style.animationDelay = Math.random() * 3 + 's';
-          el.style.width = el.style.height = (Math.random() * 15 + 20) + 'px';
-        }
-        else { // pulsing (Bintang/cahaya)
-          el.style.left = Math.random() * 100 + 'vw';
-          el.style.top = Math.random() * 100 + 'vh';
-          el.style.animationDuration = (Math.random() * 2 + 2) + 's';
-          el.style.animationDelay = Math.random() * 2 + 's';
-          el.style.width = el.style.height = (Math.random() * 8 + 12) + 'px';
-        }
-        
-        container.appendChild(el);
-      }
-    }
-
     function toggleEnvelope() { document.getElementById('envelopeModal').classList.toggle('hidden'); }
     function copyRekening() { navigator.clipboard.writeText(document.getElementById('rekNumberDisplay').innerText).then(() => showToast("Nomor rekening tersalin!")); }
 
@@ -476,6 +557,8 @@
           document.getElementById('guestNameDisplay').innerText = query; document.getElementById('guestIdDisplay').innerText = "VIP-001";
           document.getElementById('qrImageDisplay').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${query}`;
           document.getElementById('qrImageDisplay').classList.remove('hidden');
+          document.getElementById('downloadLink').style.display = 'flex';
+          document.getElementById('downloadLink').href = '#';
         }, 1000); return;
       }
 
@@ -487,7 +570,17 @@
         if (data.success) {
           resArea.classList.remove('hidden');
           document.getElementById('guestNameDisplay').innerText = data.name; document.getElementById('guestIdDisplay').innerText = data.id;
-          if (data.qrUrl) { document.getElementById('qrImageDisplay').src = data.qrUrl; document.getElementById('qrImageDisplay').classList.remove('hidden'); }
+          
+          if (data.qrUrl) { 
+             let finalQrUrl = data.qrUrl;
+             let qrIdMatch = finalQrUrl.match(/id=([-\w]+)/) || finalQrUrl.match(/d\/([-\w]+)/);
+             if (qrIdMatch && qrIdMatch[1]) {
+                finalQrUrl = "https://drive.google.com/thumbnail?id=" + qrIdMatch[1] + "&sz=w500";
+             }
+             document.getElementById('qrImageDisplay').src = finalQrUrl; 
+             document.getElementById('qrImageDisplay').classList.remove('hidden'); 
+          }
+          
           const btnDl = document.getElementById('downloadLink');
           if(data.ticketUrl) { btnDl.href = data.ticketUrl; btnDl.style.display = 'flex'; } else { btnDl.style.display = 'none'; }
         } else {
@@ -505,23 +598,38 @@
     }
 
     function setupMockup() {
-      // Mockup JSON dari OpenAI
-      const mockupAiTheme = `{"bgMain": "#fdf8f5", "bgCard": "#ffffff", "textDark": "#4a3b32", "primaryColor": "#d98a6c", "fontTitle": "Playfair Display", "fontScript": "Dancing Script", "fontBody": "Lato", "prologueText": "Maha Suci Allah yang telah menciptakan makhluk-Nya berpasang-pasangan. Ya Allah, perkenankanlah kami merangkaikan kasih sayang yang Kau ciptakan di antara kami.", "quoteText": "Cinta bukanlah mencari pasangan yang sempurna, melainkan melihat pasangan yang tidak sempurna dengan cara yang sempurna."}`;
+      const mockupAiTheme = `{"bgMain": "#f8f9fa", "bgCard": "#ffffff", "textDark": "#2d3748", "primaryColor": "#d4af37", "fontTitle": "Playfair Display", "fontScript": "Great Vibes", "fontBody": "Plus Jakarta Sans", "prologueText": "Dalam kasih karunia-Nya, kami mengundang Bapak/Ibu untuk hadir...", "quoteText": "Cinta sejati adalah perjalanan tanpa akhir.", "ornamentAnim": "falling", "ornamentPath": "M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"}`;
       applyAITheme(mockupAiTheme);
 
-      initCountdown("2026-12-25 09:00");
-      renderGallery([
-        "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80"
-      ]);
+      document.getElementById('agendaTitle').innerText = "Mode Simulasi (Demo)";
+      document.getElementById('groomFullName').innerText = "Romeo Montague, S.T.";
+      document.getElementById('groomParents').innerText = "Putra dari Bpk. Lord Montague & Ibu Lady Montague";
+      document.getElementById('brideFullName').innerText = "Juliet Capulet, S.E.";
+      document.getElementById('brideParents').innerText = "Putri dari Bpk. Lord Capulet & Ibu Lady Capulet";
+      
+      document.getElementById('akadTimeDisplay').innerHTML = "2026-12-25<br>08:00 WIB";
+      document.getElementById('akadLocDisplay').innerText = "Masjid Raya Istiqlal, Jakarta";
+      document.getElementById('resepsiTimeDisplay').innerHTML = "2026-12-25<br>11:00 WIB";
+      document.getElementById('resepsiLocDisplay').innerText = "Grand Ballroom Hotel Kempinski";
 
-      // PERBAIKAN: Tampilkan section Video, Peta, & QRIS di mode simulasi demo
-      document.getElementById('videoSection').classList.remove('hidden');
-      document.getElementById('videoFrame').src = "https://www.youtube.com/embed/jfKfPfyJRdk"; 
+      document.getElementById('igHandleDisplay').innerText = "@romeojuliet_wedding";
+      document.getElementById('igContainer').classList.remove('hidden');
+
+      initCountdown("2026-12-25 08:00");
       
       document.getElementById('locationSection').classList.remove('hidden');
       document.getElementById('locationQrImg').src = "https://quickchart.io/qr?text=https://maps.google.com&size=200";
       
+      document.getElementById('videoSection').classList.remove('hidden');
+      document.getElementById('videoFrame').src = "https://www.youtube.com/embed/Bey4XXJAqS8?autoplay=1&mute=1&loop=1&playlist=Bey4XXJAqS8";
+      
+      const mockupGallery = [
+        "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=800&q=80"
+      ];
+      renderGallery(mockupGallery);
+
       document.getElementById('qrisContainer').classList.remove('hidden');
       document.getElementById('qrisImg').src = "https://quickchart.io/qr?text=DUMMY_QRIS&size=200";
       
