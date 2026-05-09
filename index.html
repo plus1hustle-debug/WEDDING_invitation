@@ -5,31 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Wedding Invitation</title>
   
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Library Advance: Galeri 3D & Lightbox -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
 
-  <!-- CSS VARIABEL & THEME ENGINE (KUNCI UTAMA AI CHAMELEON) -->
   <style>
     :root {
-      /* Fallback Theme: Sage Green & Gold */
       --bg-main: #f0f4f0;
+      --bg-card: #ffffff;
       --text-dark: #2c402e;
       --primary: #d4af37;
       
-      /* Default Fonts */
       --font-title: 'Cormorant Garamond', serif;
       --font-script: 'Great Vibes', cursive;
       --font-body: 'Inter', sans-serif;
     }
 
-    body { background-color: var(--bg-main); color: var(--text-dark); font-family: var(--font-body); }
+    body { background-color: var(--bg-main); color: var(--text-dark); font-family: var(--font-body); transition: background-color 0.5s ease; }
     
-    /* Utility Classes AI yang akan di-suntik oleh JavaScript */
     .theme-bg-main { background-color: var(--bg-main) !important; }
+    .theme-bg-card { background-color: var(--bg-card) !important; }
     .theme-text-dark { color: var(--text-dark) !important; }
     .theme-bg-dark { background-color: var(--text-dark) !important; }
     .theme-text-primary { color: var(--primary) !important; }
@@ -40,7 +35,6 @@
     .theme-font-script { font-family: var(--font-script) !important; }
     .theme-font-body { font-family: var(--font-body) !important; }
 
-    /* CSS Khusus Efek Undangan */
     #coverOverlay {
       position: fixed; inset: 0; z-index: 50;
       background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') center/cover;
@@ -49,7 +43,6 @@
     }
     .slide-up { transform: translateY(-100%); }
 
-    /* Parallax Daun Jatuh */
     .leaf {
       position: absolute; width: 20px; height: 20px;
       background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FFFFFF"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>');
@@ -57,13 +50,11 @@
     }
     @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); } 100% { transform: translateY(110vh) rotate(360deg); } }
 
-    /* Glass Ticket */
     .glass-ticket {
-      background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 10px 40px -10px rgba(0,0,0, 0.15);
+      backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 40px -10px rgba(0,0,0, 0.15);
     }
 
-    /* Kustomisasi Galeri 3D */
     .swiper-slide { width: 75%; max-width: 300px; aspect-ratio: 3/4; }
     .swiper-pagination-bullet { background: var(--primary) !important; opacity: 0.5; }
     .swiper-pagination-bullet-active { opacity: 1; transform: scale(1.3); }
@@ -73,7 +64,6 @@
 </head>
 <body class="theme-font-body antialiased overflow-hidden theme-bg-main">
 
-  <!-- BGM -->
   <audio id="bgmAudio" loop><source src="" id="bgmSource" type="audio/mpeg"></audio>
 
   <!-- COVER HALAMAN DEPAN -->
@@ -84,61 +74,68 @@
       <p class="text-sm mb-2 opacity-90 theme-font-body">Kpd Yth. Bapak/Ibu/Saudara/i</p>
       <h2 class="text-2xl font-bold mb-8 border-b pb-2 inline-block theme-font-title theme-border-primary" id="guestNameTarget">Tamu Kehormatan</h2>
       <br>
-      <button onclick="openInvitation()" class="theme-bg-primary hover:opacity-80 text-white px-8 py-3 rounded-full text-sm tracking-wider uppercase transition-all shadow-xl theme-font-body">
+      <button onclick="openInvitation()" class="theme-bg-primary hover:opacity-80 text-white px-8 py-3 rounded-full text-sm tracking-wider uppercase transition-all shadow-xl theme-font-body font-bold">
         Buka Undangan
       </button>
     </div>
   </div>
 
-  <!-- KONTEN UTAMA WEB (MAX LEBAR HP) -->
+  <!-- KONTEN UTAMA WEB -->
   <div id="mainContent" class="max-w-md mx-auto min-h-screen relative shadow-2xl pb-24 theme-bg-main">
-    
     <div id="leafContainer" class="fixed inset-0 pointer-events-none z-0 overflow-hidden max-w-md mx-auto opacity-60"></div>
 
-    <!-- HERO SECTION (Ayat & Nama) -->
-    <section class="relative h-[85vh] flex flex-col justify-center items-center text-center p-8 bg-gradient-to-b from-black/5 to-transparent z-10">
+    <!-- HERO & AI COPYWRITING SECTION -->
+    <section class="relative min-h-[90vh] flex flex-col justify-center items-center text-center p-8 z-10">
+      
+      <!-- AI Prologue Text (Islami/Nasrani/Adat) -->
+      <p id="dynamicPrologue" class="text-xs mb-8 opacity-80 theme-text-dark theme-font-body leading-relaxed max-w-sm italic">
+        "Maha Suci Tuhan yang telah menciptakan makhluk-Nya berpasang-pasangan..."
+      </p>
+
       <p class="text-xs tracking-[0.3em] uppercase mb-4 theme-text-dark theme-font-body font-bold">Pernikahan Suci</p>
       <h1 class="text-7xl leading-tight mb-4 theme-font-script theme-text-dark" id="heroNames">
         Romeo<br><span class="text-3xl theme-font-title theme-text-primary">&</span><br>Juliet
       </h1>
       <div class="w-16 h-[1px] my-6 theme-bg-primary"></div>
-      <p class="italic text-lg max-w-xs leading-relaxed theme-font-title theme-text-dark opacity-90">
-        "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu isteri-isteri dari jenismu sendiri..."
+      
+      <!-- AI Custom Quote -->
+      <p id="dynamicQuote" class="text-lg max-w-xs leading-relaxed theme-font-title theme-text-dark font-medium">
+        "Cinta sejati tidak memiliki akhir yang bahagia, karena cinta sejati tidak pernah berakhir."
       </p>
     </section>
 
-    <!-- HITUNG MUNDUR (COUNTDOWN) -->
+    <!-- HITUNG MUNDUR -->
     <section class="py-12 px-6 z-10 relative text-center">
-      <h3 class="text-2xl mb-8 font-bold theme-font-title theme-text-dark">Waktu Menuju Bahagia</h3>
+      <h3 class="text-3xl mb-8 font-bold theme-font-title theme-text-dark">Waktu Menuju Bahagia</h3>
       <div class="flex justify-center gap-4">
-        <div class="w-16 h-16 rounded-xl bg-white shadow-md flex flex-col items-center justify-center border border-gray-100">
+        <div class="w-16 h-16 rounded-xl theme-bg-card shadow-md flex flex-col items-center justify-center border border-black/5">
           <span class="text-xl font-bold theme-font-title theme-text-primary" id="cd-days">00</span>
-          <span class="text-[9px] uppercase tracking-wider text-gray-500 theme-font-body">Hari</span>
+          <span class="text-[9px] uppercase tracking-wider theme-text-dark opacity-60 theme-font-body">Hari</span>
         </div>
-        <div class="w-16 h-16 rounded-xl bg-white shadow-md flex flex-col items-center justify-center border border-gray-100">
+        <div class="w-16 h-16 rounded-xl theme-bg-card shadow-md flex flex-col items-center justify-center border border-black/5">
           <span class="text-xl font-bold theme-font-title theme-text-primary" id="cd-hours">00</span>
-          <span class="text-[9px] uppercase tracking-wider text-gray-500 theme-font-body">Jam</span>
+          <span class="text-[9px] uppercase tracking-wider theme-text-dark opacity-60 theme-font-body">Jam</span>
         </div>
-        <div class="w-16 h-16 rounded-xl bg-white shadow-md flex flex-col items-center justify-center border border-gray-100">
+        <div class="w-16 h-16 rounded-xl theme-bg-card shadow-md flex flex-col items-center justify-center border border-black/5">
           <span class="text-xl font-bold theme-font-title theme-text-primary" id="cd-minutes">00</span>
-          <span class="text-[9px] uppercase tracking-wider text-gray-500 theme-font-body">Menit</span>
+          <span class="text-[9px] uppercase tracking-wider theme-text-dark opacity-60 theme-font-body">Menit</span>
         </div>
-        <div class="w-16 h-16 rounded-xl bg-white shadow-md flex flex-col items-center justify-center border border-gray-100">
+        <div class="w-16 h-16 rounded-xl theme-bg-card shadow-md flex flex-col items-center justify-center border border-black/5">
           <span class="text-xl font-bold theme-font-title theme-text-primary" id="cd-seconds">00</span>
-          <span class="text-[9px] uppercase tracking-wider text-gray-500 theme-font-body">Detik</span>
+          <span class="text-[9px] uppercase tracking-wider theme-text-dark opacity-60 theme-font-body">Detik</span>
         </div>
       </div>
     </section>
 
-    <!-- QR LOKASI ACARA -->
+    <!-- QR LOKASI -->
     <section id="locationSection" class="py-6 px-6 z-10 relative hidden">
       <div class="text-center mb-6">
         <h3 class="text-4xl mb-1 drop-shadow-sm theme-font-script theme-text-primary">Lokasi Bahagia</h3>
-        <p class="text-[10px] text-gray-500 tracking-[0.2em] uppercase theme-font-body">Peta & Arah Jalan</p>
+        <p class="text-[10px] opacity-70 tracking-[0.2em] uppercase theme-font-body theme-text-dark">Peta & Arah Jalan</p>
       </div>
-      <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl shadow-lg border border-white mx-auto max-w-sm text-center">
+      <div class="theme-bg-card p-6 rounded-3xl shadow-lg border border-black/5 mx-auto max-w-sm text-center">
         <img id="locationQrImg" src="" alt="QR Lokasi" class="w-48 h-48 object-contain mx-auto rounded-xl shadow-inner mb-4 border border-gray-200">
-        <p class="text-xs text-gray-600 mb-1 theme-font-body">Scan QR Code di atas untuk navigasi peta Google Maps.</p>
+        <p class="text-xs opacity-80 mb-1 theme-font-body theme-text-dark">Scan QR Code di atas untuk navigasi peta Google Maps.</p>
       </div>
     </section>
 
@@ -146,11 +143,11 @@
     <section id="videoSection" class="py-10 px-6 z-10 relative hidden">
       <div class="text-center mb-6">
         <h3 class="text-4xl mb-1 drop-shadow-sm theme-font-script theme-text-primary">Sinema Cinta</h3>
-        <p class="text-[10px] text-gray-500 tracking-[0.2em] uppercase theme-font-body">Trailer Pernikahan</p>
+        <p class="text-[10px] opacity-70 tracking-[0.2em] uppercase theme-font-body theme-text-dark">Trailer Pernikahan</p>
       </div>
-      <div class="relative w-full overflow-hidden rounded-3xl shadow-2xl border-4 border-white bg-gray-900" style="padding-top: 56.25%;">
-        <div class="absolute inset-0 flex items-center justify-center animate-pulse bg-gray-800 z-0"><span class="text-gray-400 text-xs theme-font-body">Memuat Sinema...</span></div>
-        <iframe id="videoFrame" class="absolute top-0 left-0 w-full h-full z-10 opacity-0 transition-opacity duration-1000" onload="this.style.opacity=1" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <div class="relative w-full overflow-hidden rounded-3xl shadow-2xl border-4 theme-border-primary bg-black" style="padding-top: 56.25%;">
+        <div class="absolute inset-0 flex items-center justify-center animate-pulse z-0"><span class="text-white opacity-50 text-xs theme-font-body">Memuat Sinema...</span></div>
+        <iframe id="videoFrame" class="absolute top-0 left-0 w-full h-full z-10 opacity-0 transition-opacity duration-1000" onload="this.style.opacity=1" src="" frameborder="0" allowfullscreen></iframe>
       </div>
     </section>
 
@@ -158,7 +155,7 @@
     <section id="gallerySection" class="py-12 hidden z-10 relative overflow-hidden">
       <div class="text-center mb-8">
         <h3 class="text-4xl mb-1 drop-shadow-sm theme-font-script theme-text-primary">Momen Berharga</h3>
-        <p class="text-[10px] text-gray-500 tracking-[0.2em] uppercase theme-font-body">Galeri Pre-Wedding</p>
+        <p class="text-[10px] opacity-70 tracking-[0.2em] uppercase theme-font-body theme-text-dark">Galeri Pre-Wedding</p>
       </div>
       <div class="swiper mySwiper w-full pb-14 px-4">
         <div class="swiper-wrapper" id="galleryContainer"></div>
@@ -166,26 +163,26 @@
       </div>
     </section>
 
-    <!-- TIKET MASUK / QR PENCARIAN -->
+    <!-- TIKET MASUK / QR -->
     <section class="py-10 px-6 z-10 relative">
-      <div class="glass-ticket rounded-3xl p-8 text-center relative overflow-hidden">
+      <div class="glass-ticket theme-bg-card rounded-3xl p-8 text-center relative overflow-hidden">
         
         <h3 class="text-2xl font-bold mb-2 theme-font-title theme-text-dark">Akses Masuk (QR)</h3>
-        <p class="text-xs text-gray-500 mb-6 theme-font-body">Tunjukkan QR Code ini pada petugas buku tamu.</p>
+        <p class="text-xs opacity-70 mb-6 theme-font-body theme-text-dark">Tunjukkan QR Code ini pada buku tamu elektronik di lokasi acara.</p>
 
         <form id="searchFormArea" onsubmit="event.preventDefault(); performSearch();" class="space-y-4">
-          <input type="text" id="searchInput" placeholder="Ketik Identitas Anda..." autocomplete="off" required
-                 class="w-full px-5 py-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 text-center text-sm bg-white/70 theme-font-body theme-border-primary">
-          <button type="submit" id="btnSearch" class="theme-bg-dark text-white w-full py-4 rounded-xl font-bold text-sm transition-all shadow-lg theme-font-body">
+          <input type="text" id="searchInput" placeholder="Ketik Nama Anda..." autocomplete="off" required
+                 class="w-full px-5 py-4 rounded-xl border border-black/10 focus:outline-none focus:ring-2 text-center text-sm bg-white/70 theme-font-body theme-border-primary theme-text-dark">
+          <button type="submit" id="btnSearch" class="theme-bg-primary text-white w-full py-4 rounded-xl font-bold text-sm transition-all shadow-lg hover:opacity-90 theme-font-body">
             Buka Undangan Saya
           </button>
         </form>
 
         <div id="loadingArea" class="hidden mt-4 py-4">
-          <div class="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin mx-auto theme-border-primary"></div>
+          <div class="w-8 h-8 border-4 border-gray-200 rounded-full animate-spin mx-auto theme-border-primary" style="border-top-color: transparent !important;"></div>
         </div>
 
-        <div id="resultArea" class="hidden mt-6 pt-6 border-t border-gray-200 fade-in">
+        <div id="resultArea" class="hidden mt-6 pt-6 border-t border-black/10 fade-in">
           <div class="bg-white p-4 rounded-2xl shadow-inner inline-block mb-4 border border-gray-100">
             <img id="qrImageDisplay" src="" alt="QR Code Tamu" class="w-40 h-40 object-contain mx-auto hidden">
             <p id="qrFallbackText" class="text-xs text-red-500 hidden mt-2">QR Code belum tersedia.</p>
@@ -193,100 +190,98 @@
           <h2 id="guestNameDisplay" class="text-xl font-bold mb-1 theme-font-title theme-text-dark">Nama Tamu</h2>
           <p id="guestIdDisplay" class="text-xs tracking-widest uppercase font-bold mb-5 theme-font-body theme-text-primary">ID</p>
           
-          <a id="downloadLink" href="#" target="_top" class="hidden justify-center items-center gap-2 w-full bg-gray-100 hover:bg-gray-200 py-3 rounded-xl font-bold text-xs transition-all border border-gray-300 theme-font-body theme-text-dark">
+          <a id="downloadLink" href="#" target="_top" class="hidden justify-center items-center gap-2 w-full theme-bg-main opacity-90 hover:opacity-100 py-3 rounded-xl font-bold text-xs transition-all border border-black/10 theme-font-body theme-text-dark">
             Download Tiket (PDF)
           </a>
           
-          <button type="button" onclick="resetSearch()" class="mt-4 text-[11px] text-gray-400 underline uppercase tracking-wider theme-font-body">
+          <button type="button" onclick="resetSearch()" class="mt-4 text-[11px] opacity-60 underline uppercase tracking-wider theme-font-body theme-text-dark">
             Ganti Identitas Tamu
           </button>
         </div>
-
       </div>
     </section>
 
     <!-- AMPLOP DIGITAL -->
     <section class="py-10 px-6 z-10 relative text-center pb-12">
       <h3 class="text-2xl font-bold mb-2 theme-font-title theme-text-dark">Tanda Kasih</h3>
-      <p class="text-xs text-gray-500 mb-6 theme-font-body">Doa restu Anda merupakan karunia yang sangat berarti bagi kami.</p>
+      <p class="text-xs opacity-70 mb-6 theme-font-body theme-text-dark">Doa restu Anda merupakan karunia yang sangat berarti bagi kami.</p>
       
-      <button onclick="toggleEnvelope()" class="bg-white border text-white px-8 py-3 rounded-full text-sm transition-all shadow-sm flex items-center justify-center gap-2 mx-auto theme-bg-primary theme-border-primary theme-font-body">
+      <button onclick="toggleEnvelope()" class="theme-bg-card border text-white px-8 py-3 rounded-full text-sm transition-all shadow-sm flex items-center justify-center gap-2 mx-auto theme-border-primary theme-text-primary theme-font-body font-bold hover:opacity-80">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
         Kirim Hadiah
       </button>
 
-      <div id="envelopeModal" class="hidden mt-6 bg-white p-6 rounded-3xl shadow-xl border border-gray-100 fade-in text-center relative overflow-hidden">
-        
+      <div id="envelopeModal" class="hidden mt-6 theme-bg-card p-6 rounded-3xl shadow-xl border border-black/5 fade-in text-center relative overflow-hidden">
         <div id="qrisContainer" class="hidden mb-5">
-           <p class="text-[10px] text-gray-400 tracking-widest uppercase mb-2 font-bold theme-font-body">Scan QRIS</p>
-           <img id="qrisImg" src="" alt="QRIS" class="w-48 h-48 object-contain mx-auto border-2 border-gray-100 rounded-xl shadow-sm p-2">
+           <p class="text-[10px] opacity-60 tracking-widest uppercase mb-2 font-bold theme-font-body theme-text-dark">Scan QRIS</p>
+           <img id="qrisImg" src="" alt="QRIS" class="w-48 h-48 object-contain mx-auto border-2 border-black/5 rounded-xl shadow-sm p-2 bg-white">
         </div>
-
-        <div class="border-t border-gray-100 pt-5 mt-2 hidden" id="rekContainer">
-          <p class="text-[11px] text-gray-500 uppercase tracking-[0.2em] mb-2 font-bold theme-font-body" id="bankLabel">Transfer Bank</p>
-          <div class="flex justify-between items-center bg-gray-50 p-3.5 rounded-xl border border-gray-200 shadow-inner">
+        <div class="border-t border-black/10 pt-5 mt-2 hidden" id="rekContainer">
+          <p class="text-[11px] opacity-70 uppercase tracking-[0.2em] mb-2 font-bold theme-font-body theme-text-dark" id="bankLabel">Transfer Bank</p>
+          <div class="flex justify-between items-center theme-bg-main p-3.5 rounded-xl border border-black/5 shadow-inner">
             <span class="font-mono font-bold text-lg tracking-wider theme-text-dark" id="rekNumberDisplay">1234567890</span>
             <button onclick="copyRekening()" class="text-xs text-white px-4 py-2 rounded-lg shadow-sm transition-colors flex items-center gap-1.5 font-medium theme-bg-primary theme-font-body">
               Salin
             </button>
           </div>
-          <p class="text-[11px] italic text-gray-500 mt-3 theme-font-title">a.n <span id="rekNameDisplay" class="font-bold not-italic theme-text-dark">Mempelai</span></p>
+          <p class="text-[11px] italic opacity-80 mt-3 theme-font-title theme-text-dark">a.n <span id="rekNameDisplay" class="font-bold not-italic">Mempelai</span></p>
         </div>
       </div>
     </section>
   </div>
 
-  <!-- JS LIBRARY (Swiper & Fancybox) -->
+  <div id="customToast" class="fixed top-5 left-1/2 transform -translate-x-1/2 z-[100] opacity-0 pointer-events-none transition-all duration-300 bg-red-600 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 text-sm font-sans font-medium w-11/12 max-w-sm">
+    <span id="toastMsg">Pesan Error</span>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
 
-  <!-- LOGIKA APLIKASI & AI THEME INJECTOR -->
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbyNs3KbfmkpgvDbWjsPpH8zIuEPVSJlEiTHpD7gSkh3JWDs9OLctCdniztrshy_q_cdqw/exec"; 
+    // =========================================================================
+    const API_URL = "https://script.google.com/macros/s/AKfycbzH_SUeZ9pihVVn5jB-eyzpJuHPHZeWYKqfVevs8KK20XUYSuKf_E12Y74LFLSHC7jhEw/exec"; 
+    // =========================================================================
 
     document.addEventListener("DOMContentLoaded", () => {
       createLeaves();
-      
-      const urlParams = new URLSearchParams(window.location.search);
-      const guestTo = urlParams.get('to');
+      const guestTo = new URLSearchParams(window.location.search).get('to');
       if (guestTo) {
         document.getElementById('guestNameTarget').innerText = guestTo;
         document.getElementById('searchInput').value = guestTo; 
       }
-
       fetchInitData();
     });
 
-    // FUNGSI INJEKSI TEMA AI (CHAMELEON ENGINE)
     function applyAITheme(themeJsonStr) {
       try {
         const theme = JSON.parse(themeJsonStr);
-        console.log("Tema AI Diterapkan:", theme);
+        console.log("Applying AI Theme & Copy:", theme);
         
-        // 1. Suntik Google Fonts
-        const fontUrl = `https://fonts.googleapis.com/css2?family=${theme.fontTitle.replace(/ /g, '+')}:ital,wght@0,400;0,600;0,700;1,400&family=${theme.fontScript.replace(/ /g, '+')}&family=${theme.fontBody.replace(/ /g, '+')}:wght@300;400;500;600&display=swap`;
-        const link = document.createElement('link');
-        link.href = fontUrl;
-        link.rel = 'stylesheet';
+        // 1. Font Injection
+        const fontUrl = `https://fonts.googleapis.com/css2?family=${theme.fontTitle.replace(/ /g, '+')}:ital,wght@0,400;0,700;1,400&family=${theme.fontScript.replace(/ /g, '+')}&family=${theme.fontBody.replace(/ /g, '+')}:wght@300;400;600&display=swap`;
+        const link = document.createElement('link'); link.href = fontUrl; link.rel = 'stylesheet';
         document.head.appendChild(link);
 
-        // 2. Suntik Variabel CSS
-        document.documentElement.style.setProperty('--bg-main', theme.bgMain);
-        document.documentElement.style.setProperty('--text-dark', theme.textDark);
-        document.documentElement.style.setProperty('--primary', theme.primary);
-        
-        document.documentElement.style.setProperty('--font-title', `'${theme.fontTitle}', serif`);
-        document.documentElement.style.setProperty('--font-script', `'${theme.fontScript}', cursive`);
-        document.documentElement.style.setProperty('--font-body', `'${theme.fontBody}', sans-serif`);
+        // 2. Color & Font Variable Injection
+        const docStyle = document.documentElement.style;
+        docStyle.setProperty('--bg-main', theme.bgMain);
+        docStyle.setProperty('--bg-card', theme.bgCard || '#ffffff');
+        docStyle.setProperty('--text-dark', theme.textDark);
+        docStyle.setProperty('--primary', theme.primaryColor || theme.primary);
+        docStyle.setProperty('--font-title', `'${theme.fontTitle}', serif`);
+        docStyle.setProperty('--font-script', `'${theme.fontScript}', cursive`);
+        docStyle.setProperty('--font-body', `'${theme.fontBody}', sans-serif`);
 
-        // Ubah warna SVG daun agar senada dengan warna primary
-        const encodedPrimary = encodeURIComponent(theme.primary);
+        // Update SVG Leaf Color
         const styleSheet = document.createElement("style");
-        styleSheet.innerText = `.leaf { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${encodedPrimary}"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>'); }`;
+        styleSheet.innerText = `.leaf { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${encodeURIComponent(theme.primaryColor || theme.primary)}"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>'); }`;
         document.head.appendChild(styleSheet);
-      } catch (e) {
-        console.error("Gagal membaca JSON Tema AI:", e);
-      }
+
+        // 3. Copywriting AI Injection
+        if(theme.prologueText) document.getElementById('dynamicPrologue').innerText = theme.prologueText;
+        if(theme.quoteText) document.getElementById('dynamicQuote').innerText = theme.quoteText;
+
+      } catch (e) { console.error("Gagal membaca JSON Tema AI:", e); }
     }
 
     async function fetchInitData() {
@@ -297,28 +292,19 @@
         const data = await res.json();
 
         if (data.success) {
-          // PENERAPAN TEMA AI JIKA ADA
-          if (data.themeJson) {
-             applyAITheme(data.themeJson);
-          }
+          if (data.themeJson) applyAITheme(data.themeJson);
 
           document.getElementById('coverNames').innerHTML = `${data.groomName} & ${data.brideName}`;
           document.getElementById('heroNames').innerHTML = `${data.groomName}<br><span class="text-3xl theme-font-title theme-text-primary">&</span><br>${data.brideName}`;
           
-          if(data.coverUrl) document.getElementById('coverOverlay').style.backgroundImage = `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url('${data.coverUrl}')`;
+          if(data.coverUrl) document.getElementById('coverOverlay').style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('${data.coverUrl}')`;
           if(data.bgmUrl) document.getElementById('bgmAudio').src = data.bgmUrl;
           if(data.eventDateTime) initCountdown(data.eventDateTime);
           if(data.videoUrl) setupVideo(data.videoUrl);
           if(data.gallery && data.gallery.length > 0) renderGallery(data.gallery);
 
-          if(data.qrisUrl) {
-            document.getElementById('qrisImg').src = safeDriveUrl(data.qrisUrl);
-            document.getElementById('qrisContainer').classList.remove('hidden');
-          }
-          if(data.locationQrUrl) {
-            document.getElementById('locationQrImg').src = safeDriveUrl(data.locationQrUrl);
-            document.getElementById('locationSection').classList.remove('hidden');
-          }
+          if(data.qrisUrl) { document.getElementById('qrisImg').src = safeDriveUrl(data.qrisUrl); document.getElementById('qrisContainer').classList.remove('hidden'); }
+          if(data.locationQrUrl) { document.getElementById('locationQrImg').src = safeDriveUrl(data.locationQrUrl); document.getElementById('locationSection').classList.remove('hidden'); }
           if(data.rekNumber) {
             document.getElementById('bankLabel').innerText = `Transfer ${data.bankName || 'Bank'}`;
             document.getElementById('rekNumberDisplay').innerText = data.rekNumber;
@@ -326,9 +312,7 @@
             document.getElementById('rekContainer').classList.remove('hidden');
           }
         }
-      } catch (err) {
-        setupMockup(); 
-      }
+      } catch (err) { setupMockup(); }
     }
 
     function openInvitation() {
@@ -339,20 +323,17 @@
     }
 
     function safeDriveUrl(url) {
-      if(url.includes("drive.google.com/file/d/")) {
-        const id = url.match(/\/d\/([-\w]+)/)[1]; return `https://drive.google.com/thumbnail?id=${id}&sz=w500`;
-      }
+      if(url.includes("drive.google.com/file/d/")) return `https://drive.google.com/thumbnail?id=${url.match(/\/d\/([-\w]+)/)[1]}&sz=w500`;
       return url;
     }
 
     function setupVideo(url) {
       if (!url) return;
       let finalUrl = url;
-      if (url.includes('youtube.com/watch')) { finalUrl = `https://www.youtube.com/embed/${new URL(url).searchParams.get('v')}?rel=0`; } 
-      else if (url.includes('youtu.be/')) { finalUrl = `https://www.youtube.com/embed/${url.split('youtu.be/')[1].split('?')[0]}?rel=0`; } 
-      else if (url.includes('drive.google.com/file/d/')) { finalUrl = `https://drive.google.com/file/d/${url.match(/\/d\/([-\w]+)/)[1]}/preview`; }
-      document.getElementById('videoFrame').src = finalUrl;
-      document.getElementById('videoSection').classList.remove('hidden');
+      if (url.includes('youtube.com/watch')) finalUrl = `https://www.youtube.com/embed/${new URL(url).searchParams.get('v')}?rel=0`;
+      else if (url.includes('youtu.be/')) finalUrl = `https://www.youtube.com/embed/${url.split('youtu.be/')[1].split('?')[0]}?rel=0`;
+      else if (url.includes('drive.google.com/file/d/')) finalUrl = `https://drive.google.com/file/d/${url.match(/\/d\/([-\w]+)/)[1]}/preview`;
+      document.getElementById('videoFrame').src = finalUrl; document.getElementById('videoSection').classList.remove('hidden');
     }
 
     function initCountdown(dateStr) {
@@ -369,25 +350,17 @@
     }
 
     function renderGallery(imageUrls) {
-      const galContainer = document.getElementById('galleryContainer');
-      document.getElementById('gallerySection').classList.remove('hidden');
+      const galContainer = document.getElementById('galleryContainer'); document.getElementById('gallerySection').classList.remove('hidden');
       let html = '';
       imageUrls.forEach(url => {
         let safeUrl = safeDriveUrl(url);
-        html += `<div class="swiper-slide rounded-2xl overflow-hidden shadow-2xl border-4 border-white/90 animate-kenburns group">
+        html += `<div class="swiper-slide rounded-2xl overflow-hidden shadow-2xl border-4 theme-border-primary animate-kenburns group">
             <a href="${safeUrl.replace('sz=w500', 'sz=w1200')}" data-fancybox="gallery" class="block w-full h-full cursor-zoom-in">
               <img src="${safeUrl}" class="w-full h-full object-cover transition-transform duration-700">
-            </a>
-          </div>`;
+            </a></div>`;
       });
       galContainer.innerHTML = html;
-
-      new Swiper(".mySwiper", {
-        effect: "coverflow", grabCursor: true, centeredSlides: true, slidesPerView: "auto", loop: imageUrls.length > 2,
-        coverflowEffect: { rotate: 20, stretch: 0, depth: 300, modifier: 1, slideShadows: true },
-        autoplay: { delay: 2500, disableOnInteraction: false },
-        pagination: { el: ".swiper-pagination", dynamicBullets: true, clickable: true }
-      });
+      new Swiper(".mySwiper", { effect: "coverflow", grabCursor: true, centeredSlides: true, slidesPerView: "auto", loop: imageUrls.length > 2, coverflowEffect: { rotate: 20, stretch: 0, depth: 300, modifier: 1, slideShadows: true }, autoplay: { delay: 2500, disableOnInteraction: false }, pagination: { el: ".swiper-pagination", dynamicBullets: true, clickable: true } });
       Fancybox.bind('[data-fancybox="gallery"]', { Images: { zoom: true }, Carousel: { infinite: true } });
     }
 
@@ -396,20 +369,16 @@
       for (let i = 0; i < 15; i++) {
         let leaf = document.createElement('div'); leaf.className = 'leaf';
         leaf.style.left = Math.random() * 100 + 'vw'; leaf.style.animationDuration = Math.random() * 10 + 10 + 's';
-        leaf.style.animationDelay = Math.random() * 5 + 's';
-        container.appendChild(leaf);
+        leaf.style.animationDelay = Math.random() * 5 + 's'; container.appendChild(leaf);
       }
     }
 
     function toggleEnvelope() { document.getElementById('envelopeModal').classList.toggle('hidden'); }
-    function copyRekening() {
-      navigator.clipboard.writeText(document.getElementById('rekNumberDisplay').innerText).then(() => alert("Tersalin!"));
-    }
+    function copyRekening() { navigator.clipboard.writeText(document.getElementById('rekNumberDisplay').innerText).then(() => showToast("Nomor rekening tersalin!")); }
 
     async function performSearch() {
       const query = document.getElementById('searchInput').value.trim();
       if (!query) return;
-
       const btn = document.getElementById('btnSearch'); const load = document.getElementById('loadingArea');
       const resArea = document.getElementById('resultArea'); const form = document.getElementById('searchFormArea');
 
@@ -421,8 +390,7 @@
           document.getElementById('guestNameDisplay').innerText = query; document.getElementById('guestIdDisplay').innerText = "VIP-001";
           document.getElementById('qrImageDisplay').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${query}`;
           document.getElementById('qrImageDisplay').classList.remove('hidden');
-        }, 1000);
-        return;
+        }, 1000); return;
       }
 
       try {
@@ -437,36 +405,28 @@
           const btnDl = document.getElementById('downloadLink');
           if(data.ticketUrl) { btnDl.href = data.ticketUrl; btnDl.style.display = 'flex'; } else { btnDl.style.display = 'none'; }
         } else {
-          form.classList.remove('hidden'); alert(data.message);
+          form.classList.remove('hidden'); showToast(data.message);
         }
-      } catch (err) {
-        load.classList.add('hidden'); form.classList.remove('hidden'); btn.disabled = false; alert("Gagal menghubungi server.");
-      }
+      } catch (err) { load.classList.add('hidden'); form.classList.remove('hidden'); btn.disabled = false; showToast("Gagal menghubungi server."); }
     }
 
-    function resetSearch() {
-      document.getElementById('searchInput').value = ""; document.getElementById('resultArea').classList.add('hidden');
-      document.getElementById('searchFormArea').classList.remove('hidden');
+    function resetSearch() { document.getElementById('searchInput').value = ""; document.getElementById('resultArea').classList.add('hidden'); document.getElementById('searchFormArea').classList.remove('hidden'); }
+
+    function showToast(msg) {
+      const toast = document.getElementById('customToast'); document.getElementById('toastMsg').innerText = msg;
+      toast.classList.remove('opacity-0', 'pointer-events-none'); toast.classList.add('opacity-100', 'translate-y-4');
+      setTimeout(() => { toast.classList.add('opacity-0', 'pointer-events-none'); toast.classList.remove('opacity-100', 'translate-y-4'); }, 3000);
     }
 
     function setupMockup() {
-      // CONTOH TEMA AI OTOMATIS: Midnight Navy & Rose Gold
-      const mockupAiTheme = `{"bgMain": "#0f172a", "textDark": "#f8fafc", "primary": "#fda4af", "fontTitle": "Playfair Display", "fontScript": "Dancing Script", "fontBody": "Montserrat"}`;
+      // Mockup JSON dari OpenAI
+      const mockupAiTheme = `{"bgMain": "#fdf8f5", "bgCard": "#ffffff", "textDark": "#4a3b32", "primaryColor": "#d98a6c", "fontTitle": "Playfair Display", "fontScript": "Dancing Script", "fontBody": "Lato", "prologueText": "Maha Suci Allah yang telah menciptakan makhluk-Nya berpasang-pasangan. Ya Allah, perkenankanlah kami merangkaikan kasih sayang yang Kau ciptakan di antara kami.", "quoteText": "Cinta bukanlah mencari pasangan yang sempurna, melainkan melihat pasangan yang tidak sempurna dengan cara yang sempurna."}`;
       applyAITheme(mockupAiTheme);
 
       initCountdown("2026-12-25 09:00");
-      setupVideo("https://www.youtube.com/watch?v=dQw4w9WgXcQ"); 
-      document.getElementById('locationQrImg').src = "https://quickchart.io/qr?text=https://maps.google.com&size=300&margin=1";
-      document.getElementById('locationSection').classList.remove('hidden');
-      document.getElementById('qrisImg').src = "https://quickchart.io/qr?text=QRIS_DUMMY&size=300&margin=1";
-      document.getElementById('qrisContainer').classList.remove('hidden');
-      document.getElementById('bankLabel').innerText = `Transfer BCA`; document.getElementById('rekNumberDisplay').innerText = `8765432109`;
-      document.getElementById('rekNameDisplay').innerText = `Romeo Montague`; document.getElementById('rekContainer').classList.remove('hidden');
-
       renderGallery([
         "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80"
+        "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80"
       ]);
     }
   </script>
