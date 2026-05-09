@@ -132,14 +132,26 @@
       </div>
     </section>
 
-    <!-- VIDEO TEASER SECTION (NEW) -->
+    <!-- LOCATION QR SECTION (FITUR BARU) -->
+    <section id="locationSection" class="py-6 px-6 z-10 relative hidden">
+      <div class="text-center mb-6">
+        <h3 class="text-4xl font-script text-[#d4af37] mb-1 drop-shadow-sm">Lokasi Bahagia</h3>
+        <p class="text-[10px] font-sans text-gray-400 tracking-[0.2em] uppercase">Peta & Arah Jalan</p>
+      </div>
+      <div class="bg-white/80 backdrop-blur-md p-6 rounded-3xl shadow-lg border border-white mx-auto max-w-sm text-center">
+        <img id="locationQrImg" src="" alt="QR Lokasi" class="w-48 h-48 object-contain mx-auto rounded-xl shadow-inner mb-4 border border-gray-200">
+        <p class="text-xs text-gray-500 font-sans mb-1">Scan QR Code di atas menggunakan smartphone Anda untuk rute peta (Google Maps).</p>
+      </div>
+    </section>
+
+    <!-- VIDEO TEASER SECTION -->
     <section id="videoSection" class="py-8 px-6 z-10 relative hidden">
       <div class="text-center mb-6">
         <h3 class="text-4xl font-script text-[#d4af37] mb-1 drop-shadow-sm">Sinema Cinta</h3>
         <p class="text-[10px] font-sans text-gray-400 tracking-[0.2em] uppercase">Teaser Pernikahan</p>
       </div>
       <div class="relative w-full overflow-hidden rounded-2xl shadow-xl border-4 border-white bg-gray-200" style="padding-top: 56.25%;">
-        <!-- Skeleton Loading (Muncul sebelum iframe beres render) -->
+        <!-- Skeleton Loading -->
         <div class="absolute inset-0 flex items-center justify-center animate-pulse bg-gray-100 z-0">
            <span class="text-gray-400 text-xs">Memuat Video...</span>
         </div>
@@ -175,7 +187,7 @@
 
         <!-- Form Cari Tiket -->
         <form id="searchFormArea" onsubmit="event.preventDefault(); performSearch();" class="space-y-4">
-          <input type="text" id="searchInput" placeholder="Ketik Nama Anda..." autocomplete="off" required
+          <input type="text" id="searchInput" placeholder="Ketik Identitas Anda..." autocomplete="off" required
                  class="w-full px-5 py-4 rounded-xl border border-gray-200 focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30 outline-none text-center font-sans text-sm bg-white/70">
           <button type="submit" id="btnSearch" class="bg-[#2c402e] hover:bg-[#1a261b] text-white w-full py-4 rounded-xl font-bold font-sans text-sm transition-all shadow-lg flex justify-center items-center gap-2">
             Cari Undangan Saya
@@ -208,7 +220,7 @@
       </div>
     </section>
 
-    <!-- AMPLOP DIGITAL SECTION -->
+    <!-- AMPLOP DIGITAL SECTION (QRIS & REK) -->
     <section class="py-10 px-6 z-10 relative text-center pb-24">
       <h3 class="text-2xl font-serif text-[#2c402e] mb-2 font-bold">Amplop Digital</h3>
       <p class="text-xs font-sans text-gray-500 mb-6">Doa restu Anda merupakan karunia yang sangat berarti bagi kami.</p>
@@ -218,12 +230,26 @@
         Kirim Hadiah
       </button>
 
-      <!-- Modal Rekening -->
-      <div id="envelopeModal" class="hidden mt-6 bg-white p-6 rounded-2xl shadow-lg border border-gray-100 fade-in text-left">
-        <p class="font-sans text-xs text-gray-500 uppercase tracking-wider mb-1">BCA - Romeo Montague</p>
-        <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
-          <span class="font-mono font-bold text-lg text-[#2c402e]" id="rekNumber">1234567890</span>
-          <button onclick="copyRekening()" class="text-xs bg-[#d4af37] text-white px-3 py-1.5 rounded-md hover:bg-[#b8952b]">Salin</button>
+      <!-- Modal Rekening & QRIS -->
+      <div id="envelopeModal" class="hidden mt-6 bg-white p-6 rounded-3xl shadow-xl border border-gray-100 fade-in text-center relative overflow-hidden">
+        
+        <!-- Area QRIS -->
+        <div id="qrisContainer" class="hidden mb-4">
+           <p class="text-[10px] font-sans text-gray-400 tracking-widest uppercase mb-2 font-bold">Scan QRIS</p>
+           <img id="qrisImg" src="" alt="QRIS" class="w-48 h-48 object-contain mx-auto border-2 border-gray-100 rounded-xl shadow-sm p-2">
+        </div>
+
+        <!-- Area Rekening Manual (DIBUAT DINAMIS DAN ELEGAN) -->
+        <div class="border-t border-gray-100 pt-4 mt-2 hidden" id="rekContainer">
+          <p class="font-sans text-[11px] text-gray-500 uppercase tracking-[0.2em] mb-2 font-bold" id="bankLabel">Transfer Bank</p>
+          <div class="flex justify-between items-center bg-[#f0f4f0]/50 p-3.5 rounded-xl border border-[#2c402e]/10 shadow-inner">
+            <span class="font-mono font-bold text-lg text-[#2c402e] tracking-wider" id="rekNumberDisplay">1234567890</span>
+            <button onclick="copyRekening()" class="text-xs bg-[#d4af37] text-white px-4 py-2 rounded-lg hover:bg-[#b8952b] shadow-sm transition-colors flex items-center gap-1.5 font-sans font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+              Salin
+            </button>
+          </div>
+          <p class="text-[11px] font-serif italic text-gray-500 mt-3">a.n <span id="rekNameDisplay" class="font-bold text-[#2c402e] not-italic">Mempelai</span></p>
         </div>
       </div>
     </section>
@@ -244,9 +270,8 @@
     // =========================================================================
     // KONFIGURASI PENTING (Ganti dengan URL Web App Google Apps Script Anda!)
     // =========================================================================
-    const API_URL = "https://script.google.com/macros/s/AKfycbyLN3BcvzV1IABB4Tj4GFN2zE9_Wsv5o-tFO4YgQUnwiFEVEkNuFFYOXxHcJfFrj0P6hw/exec"; 
+    const API_URL = "https://script.google.com/macros/s/AKfycbwWvOfXHMyaEB0bNk-SXUJEqonOzTPIR-pE03zP2j3M3sb9kcVSkAcOA6745Aj5cIttfw/exec"; 
 
-    // --- LOGIKA UTAMA UI ---
     document.addEventListener("DOMContentLoaded", () => {
       createLeaves();
       
@@ -270,7 +295,6 @@
       }
     }
 
-    // --- FETCH DATA KE BACKEND (API) ---
     async function fetchInitData() {
       try {
         if (API_URL.includes("ISI_DENGAN_URL")) {
@@ -293,11 +317,39 @@
 
           // Setup Galeri Premium
           if(data.gallery && data.gallery.length > 0) renderGallery(data.gallery);
+
+          // Setup QRIS
+          if(data.qrisUrl) {
+            document.getElementById('qrisImg').src = safeDriveUrl(data.qrisUrl);
+            document.getElementById('qrisContainer').classList.remove('hidden');
+          }
+
+          // Setup QR Lokasi
+          if(data.locationQrUrl) {
+            document.getElementById('locationQrImg').src = safeDriveUrl(data.locationQrUrl);
+            document.getElementById('locationSection').classList.remove('hidden');
+          }
+
+          // Setup Rekening Bank (NEW)
+          if(data.rekNumber) {
+            document.getElementById('bankLabel').innerText = `Transfer ${data.bankName || 'Bank'}`;
+            document.getElementById('rekNumberDisplay').innerText = data.rekNumber;
+            document.getElementById('rekNameDisplay').innerText = data.rekName || data.groomName;
+            document.getElementById('rekContainer').classList.remove('hidden');
+          }
         }
       } catch (err) {
         console.error("Gagal memuat konfigurasi utama.", err);
-        setupMockup(); // Fallback
+        setupMockup(); 
       }
+    }
+
+    function safeDriveUrl(url) {
+      if(url.includes("drive.google.com/file/d/")) {
+        const id = url.match(/\/d\/([-\w]+)/)[1];
+        return `https://drive.google.com/thumbnail?id=${id}&sz=w500`;
+      }
+      return url;
     }
 
     // FUNGSI SETUP VIDEO & SMART PARSER
@@ -305,7 +357,6 @@
       if (!url) return;
       let finalUrl = url;
       
-      // Parser Cerdas YouTube & G-Drive agar bisa diputar di Iframe
       if (url.includes('youtube.com/watch')) {
         const videoId = new URL(url).searchParams.get('v');
         finalUrl = `https://www.youtube.com/embed/${videoId}?rel=0`;
@@ -321,7 +372,6 @@
       document.getElementById('videoSection').classList.remove('hidden');
     }
 
-    // --- PENCARIAN TIKET (QR CODE) ---
     async function performSearch() {
       const query = document.getElementById('searchInput').value.trim();
       if (!query) { showToast("Silakan masukkan nama Anda."); return; }
@@ -337,7 +387,6 @@
       load.classList.remove('hidden');
 
       if (API_URL.includes("ISI_DENGAN_URL")) {
-        // Mode Simulasi
         setTimeout(() => {
           load.classList.add('hidden');
           resArea.classList.remove('hidden');
@@ -403,7 +452,6 @@
       document.getElementById('searchFormArea').classList.remove('hidden');
     }
 
-    // --- FUNGSI PENDUKUNG ---
     function showToast(msg) {
       const toast = document.getElementById('customToast');
       document.getElementById('toastMsg').innerText = msg;
@@ -421,15 +469,15 @@
     }
 
     function copyRekening() {
-      const rek = document.getElementById('rekNumber').innerText;
+      const rek = document.getElementById('rekNumberDisplay').innerText; // PERBAIKAN ID
       navigator.clipboard.writeText(rek).then(() => {
-        alert("Nomor rekening berhasil disalin!");
+        showToast("Nomor rekening berhasil disalin!");
       }).catch(err => {
         const temp = document.createElement("input");
         document.body.appendChild(temp);
         temp.value = rek; temp.select(); document.execCommand("copy");
         document.body.removeChild(temp);
-        alert("Nomor rekening berhasil disalin!");
+        showToast("Nomor rekening berhasil disalin!");
       });
     }
 
@@ -461,7 +509,6 @@
       }
     }
 
-    // FUNGSI RENDER GALERI 3D & LIGHTBOX
     function renderGallery(imageUrls) {
       const galContainer = document.getElementById('galleryContainer');
       document.getElementById('gallerySection').classList.remove('hidden');
@@ -516,8 +563,22 @@
 
     function setupMockup() {
       initCountdown("2026-12-25 09:00");
-      setupVideo("https://www.youtube.com/watch?v=dQw4w9WgXcQ"); // Dummy Video
+      setupVideo("https://www.youtube.com/watch?v=dQw4w9WgXcQ"); 
       
+      // Tampilkan QR Lokasi (Mockup)
+      document.getElementById('locationQrImg').src = "https://quickchart.io/qr?text=https://maps.google.com&size=300&margin=1";
+      document.getElementById('locationSection').classList.remove('hidden');
+
+      // Tampilkan QRIS (Mockup)
+      document.getElementById('qrisImg').src = "https://quickchart.io/qr?text=QRIS_DUMMY_DATA&size=300&margin=1";
+      document.getElementById('qrisContainer').classList.remove('hidden');
+
+      // Tampilkan Rekening (Mockup)
+      document.getElementById('bankLabel').innerText = `Transfer BCA`;
+      document.getElementById('rekNumberDisplay').innerText = `8765432109`;
+      document.getElementById('rekNameDisplay').innerText = `Romeo Montague`;
+      document.getElementById('rekContainer').classList.remove('hidden');
+
       const dummyImages = [
         "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=80",
         "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80",
