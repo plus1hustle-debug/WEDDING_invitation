@@ -8,6 +8,10 @@
   <!-- Font Estetika Pernikahan -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   
+  <!-- LIBRARY ADVANCE UNTUK GALERI 3D & LIGHTBOX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+
   <style>
     /* Konfigurasi Font Custom */
     .font-serif { font-family: 'Cormorant Garamond', serif; }
@@ -59,6 +63,13 @@
     #customToast { transition: opacity 0.3s ease, transform 0.3s ease; }
     .toast-hidden { opacity: 0; transform: translateY(-20px); pointer-events: none; }
     .toast-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+    /* Kustomisasi Tema Swiper 3D & Efek Ken Burns */
+    .swiper-slide { width: 70%; max-width: 280px; }
+    .swiper-pagination-bullet { background: #d4af37 !important; opacity: 0.5; }
+    .swiper-pagination-bullet-active { opacity: 1; transform: scale(1.2); }
+    @keyframes slowZoom { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
+    .animate-kenburns:hover img { animation: slowZoom 10s ease-in-out infinite alternate; }
   </style>
 </head>
 <body class="font-sans antialiased overflow-hidden">
@@ -88,6 +99,7 @@
     <!-- Animasi Daun -->
     <div id="leafContainer" class="fixed inset-0 pointer-events-none z-0 overflow-hidden max-w-md mx-auto"></div>
 
+    <!-- HERO SECTION -->
     <section class="relative h-[85vh] flex flex-col justify-center items-center text-center p-8 bg-gradient-to-b from-[#2c402e]/10 to-transparent z-10">
       <p class="font-sans text-xs tracking-[0.3em] uppercase text-[#2c402e] mb-4">Pernikahan Suci</p>
       <h1 class="text-7xl font-script text-[#2c402e] leading-tight mb-4" id="heroNames">Romeo<br><span class="text-3xl font-serif text-[#d4af37]">&</span><br>Juliet</h1>
@@ -97,6 +109,7 @@
       </p>
     </section>
 
+    <!-- COUNTDOWN SECTION -->
     <section class="py-12 px-6 z-10 relative text-center">
       <h3 class="text-2xl font-serif text-[#2c402e] mb-8 font-bold">Waktu Menuju Bahagia</h3>
       <div class="flex justify-center gap-4">
@@ -119,13 +132,40 @@
       </div>
     </section>
 
-    <section id="gallerySection" class="py-12 hidden z-10 relative">
-      <h3 class="text-2xl font-serif text-[#2c402e] mb-6 font-bold text-center">Momen Kami</h3>
-      <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 px-6 pb-6 scrollbar-hide" id="galleryContainer">
-        <!-- Foto digenerate via JS -->
+    <!-- VIDEO TEASER SECTION (NEW) -->
+    <section id="videoSection" class="py-8 px-6 z-10 relative hidden">
+      <div class="text-center mb-6">
+        <h3 class="text-4xl font-script text-[#d4af37] mb-1 drop-shadow-sm">Sinema Cinta</h3>
+        <p class="text-[10px] font-sans text-gray-400 tracking-[0.2em] uppercase">Teaser Pernikahan</p>
+      </div>
+      <div class="relative w-full overflow-hidden rounded-2xl shadow-xl border-4 border-white bg-gray-200" style="padding-top: 56.25%;">
+        <!-- Skeleton Loading (Muncul sebelum iframe beres render) -->
+        <div class="absolute inset-0 flex items-center justify-center animate-pulse bg-gray-100 z-0">
+           <span class="text-gray-400 text-xs">Memuat Video...</span>
+        </div>
+        <!-- Iframe Video -->
+        <iframe id="videoFrame" class="absolute top-0 left-0 w-full h-full z-10" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
     </section>
 
+    <!-- GALERI PREMIUM 3D COVERFLOW -->
+    <section id="gallerySection" class="py-12 hidden z-10 relative overflow-hidden">
+      <div class="text-center mb-8">
+        <h3 class="text-4xl font-script text-[#d4af37] mb-1 drop-shadow-sm">Kisah Cinta Kami</h3>
+        <p class="text-[10px] font-sans text-gray-400 tracking-[0.2em] uppercase">Galeri Momen Bahagia</p>
+      </div>
+      
+      <!-- Container Swiper 3D -->
+      <div class="swiper mySwiper w-full pb-14 px-4">
+        <div class="swiper-wrapper" id="galleryContainer">
+          <!-- Foto digenerate via JS -->
+        </div>
+        <!-- Navigasi Titik Emas -->
+        <div class="swiper-pagination"></div>
+      </div>
+    </section>
+
+    <!-- TICKETING SECTION -->
     <section class="py-10 px-6 z-10 relative">
       <div class="glass-ticket rounded-3xl p-8 text-center relative overflow-hidden">
         <div class="absolute -right-8 -top-8 w-24 h-24 bg-[#d4af37]/20 rounded-full blur-xl"></div>
@@ -168,6 +208,7 @@
       </div>
     </section>
 
+    <!-- AMPLOP DIGITAL SECTION -->
     <section class="py-10 px-6 z-10 relative text-center pb-24">
       <h3 class="text-2xl font-serif text-[#2c402e] mb-2 font-bold">Amplop Digital</h3>
       <p class="text-xs font-sans text-gray-500 mb-6">Doa restu Anda merupakan karunia yang sangat berarti bagi kami.</p>
@@ -195,33 +236,34 @@
     <span id="toastMsg">Pesan Error</span>
   </div>
 
+  <!-- SCRIPT LIBRARY ADVANCE -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+
   <script>
     // =========================================================================
-    // KONFIGURASI PENTING (Ganti dengan URL Google Apps Script Anda!)
+    // KONFIGURASI PENTING (Ganti dengan URL Web App Google Apps Script Anda!)
     // =========================================================================
-    const API_URL = "https://script.google.com/macros/s/AKfycbzre3Xi-2Mky3IcbT4edvv3oaJ7QMN8qWpMRJnMPRC7tIxtr-K-RHaM2I2sw-GiTNMxlg/exec"; 
+    const API_URL = "https://script.google.com/macros/s/AKfycbyLN3BcvzV1IABB4Tj4GFN2zE9_Wsv5o-tFO4YgQUnwiFEVEkNuFFYOXxHcJfFrj0P6hw/exec"; 
 
     // --- LOGIKA UTAMA UI ---
     document.addEventListener("DOMContentLoaded", () => {
       createLeaves();
       
-      // Ambil nama dari Parameter URL (contoh: ?to=Budi+Keluarga)
       const urlParams = new URLSearchParams(window.location.search);
       const guestTo = urlParams.get('to');
       if (guestTo) {
         document.getElementById('guestNameTarget').innerText = guestTo;
-        document.getElementById('searchInput').value = guestTo; // Pre-fill kotak pencarian
+        document.getElementById('searchInput').value = guestTo; 
       }
 
       fetchInitData();
     });
 
-    // --- FITUR MUKA (Buka Undangan & Audio) ---
     function openInvitation() {
       document.getElementById('coverOverlay').classList.add('slide-up');
-      document.body.classList.remove('overflow-hidden'); // Izinkan scroll
+      document.body.classList.remove('overflow-hidden'); 
       
-      // Putar musik (Browser policy requires interaction first)
       const audio = document.getElementById('bgmAudio');
       if(audio.src && audio.src !== window.location.href) {
          audio.play().catch(e => console.log("Auto-play diblokir browser."));
@@ -246,21 +288,37 @@
           if(data.bgmUrl) document.getElementById('bgmAudio').src = data.bgmUrl;
           if(data.eventDateTime) initCountdown(data.eventDateTime);
           
-          // Setup Galeri
-          if(data.gallery && data.gallery.length > 0) {
-            const galContainer = document.getElementById('galleryContainer');
-            document.getElementById('gallerySection').classList.remove('hidden');
-            let html = '';
-            data.gallery.forEach(url => {
-              html += `<div class="snap-center shrink-0 w-64 h-96 rounded-2xl overflow-hidden shadow-xl border-4 border-white"><img src="${url}" class="w-full h-full object-cover"></div>`;
-            });
-            galContainer.innerHTML = html;
-          }
+          // Setup Video
+          if(data.videoUrl) setupVideo(data.videoUrl);
+
+          // Setup Galeri Premium
+          if(data.gallery && data.gallery.length > 0) renderGallery(data.gallery);
         }
       } catch (err) {
         console.error("Gagal memuat konfigurasi utama.", err);
         setupMockup(); // Fallback
       }
+    }
+
+    // FUNGSI SETUP VIDEO & SMART PARSER
+    function setupVideo(url) {
+      if (!url) return;
+      let finalUrl = url;
+      
+      // Parser Cerdas YouTube & G-Drive agar bisa diputar di Iframe
+      if (url.includes('youtube.com/watch')) {
+        const videoId = new URL(url).searchParams.get('v');
+        finalUrl = `https://www.youtube.com/embed/${videoId}?rel=0`;
+      } else if (url.includes('youtu.be/')) {
+        const videoId = url.split('youtu.be/')[1].split('?')[0];
+        finalUrl = `https://www.youtube.com/embed/${videoId}?rel=0`;
+      } else if (url.includes('drive.google.com/file/d/')) {
+        const fileId = url.match(/\/d\/([-\w]+)/)[1];
+        finalUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+      }
+      
+      document.getElementById('videoFrame').src = finalUrl;
+      document.getElementById('videoSection').classList.remove('hidden');
     }
 
     // --- PENCARIAN TIKET (QR CODE) ---
@@ -367,7 +425,6 @@
       navigator.clipboard.writeText(rek).then(() => {
         alert("Nomor rekening berhasil disalin!");
       }).catch(err => {
-        // Fallback for older browsers
         const temp = document.createElement("input");
         document.body.appendChild(temp);
         temp.value = rek; temp.select(); document.execCommand("copy");
@@ -404,17 +461,70 @@
       }
     }
 
+    // FUNGSI RENDER GALERI 3D & LIGHTBOX
+    function renderGallery(imageUrls) {
+      const galContainer = document.getElementById('galleryContainer');
+      document.getElementById('gallerySection').classList.remove('hidden');
+      let html = '';
+      
+      imageUrls.forEach(url => {
+        html += `
+          <div class="swiper-slide rounded-2xl overflow-hidden shadow-2xl border-4 border-white/90 animate-kenburns group">
+            <a href="${url}" data-fancybox="wedding-gallery" class="block w-full h-full relative cursor-zoom-in">
+              <img src="${url}" class="w-full h-full object-cover transition-transform duration-700">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-5">
+                <span class="text-white font-sans text-xs tracking-widest uppercase flex items-center gap-1.5 drop-shadow-md">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg> Sentuh untuk Perbesar
+                </span>
+              </div>
+            </a>
+          </div>
+        `;
+      });
+      galContainer.innerHTML = html;
+
+      new Swiper(".mySwiper", {
+        effect: "coverflow",
+        grabCursor: true,
+        centeredSlides: true,
+        slidesPerView: "auto",
+        loop: imageUrls.length > 2, 
+        coverflowEffect: {
+          rotate: 15,
+          stretch: 0,
+          depth: 250,
+          modifier: 1,
+          slideShadows: true,
+        },
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          dynamicBullets: true,
+          clickable: true,
+        },
+      });
+
+      Fancybox.bind('[data-fancybox="wedding-gallery"]', {
+        Toolbar: { display: { left: ["infobar"], right: ["slideshow", "download", "close"] } },
+        Images: { zoom: true },
+        Carousel: { infinite: true }
+      });
+    }
+
     function setupMockup() {
       initCountdown("2026-12-25 09:00");
-      document.getElementById('gallerySection').classList.remove('hidden');
-      document.getElementById('galleryContainer').innerHTML = `
-        <div class="snap-center shrink-0 w-64 h-96 rounded-2xl overflow-hidden shadow-xl border-4 border-white">
-          <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover">
-        </div>
-        <div class="snap-center shrink-0 w-64 h-96 rounded-2xl overflow-hidden shadow-xl border-4 border-white">
-          <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover">
-        </div>
-      `;
+      setupVideo("https://www.youtube.com/watch?v=dQw4w9WgXcQ"); // Dummy Video
+      
+      const dummyImages = [
+        "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80"
+      ];
+      renderGallery(dummyImages);
     }
   </script>
 </body>
