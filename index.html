@@ -256,13 +256,19 @@
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
 
   <script>
-    const API_URL = "ISI_DENGAN_URL_WEB_APP_GOOGLE_APPS_SCRIPT_ANDA"; 
+    const API_URL = "https://script.google.com/macros/s/AKfycbwJO9TubcqdbOqumUNYDcGm5MJerHVVhL1f0oRY2J1y9-GkdyFa5Xrd8cEeVvS1jH1cgQ/exec"; 
     const CACHE_KEY = 'guest_ticket_id_cache';
 
     
     // 1. Fungsi Buka Undangan & BGM
     function openInvitation() {
       document.getElementById('coverOverlay').classList.add('slide-up');
+      
+      // PERBAIKAN: Buka kunci scroll halaman agar tamu bisa melihat ke bawah
+      document.body.classList.remove('overflow-hidden');
+      // Mencegah layar goyang ke samping
+      document.body.classList.add('overflow-x-hidden'); 
+      
       const audio = document.getElementById('bgmAudio');
       if (audio.src && !audio.src.includes('undefined')) {
         audio.play().catch(e => console.log("Autoplay ditahan browser, tekan layar untuk memutar musik."));
@@ -464,7 +470,7 @@
 
       btn.disabled = true; form.classList.add('hidden'); resArea.classList.add('hidden'); load.classList.remove('hidden');
 
-      if (API_URL.includes("https://script.google.com/macros/s/AKfycbwJO9TubcqdbOqumUNYDcGm5MJerHVVhL1f0oRY2J1y9-GkdyFa5Xrd8cEeVvS1jH1cgQ/exec")) {
+      if (API_URL.includes("ISI_DENGAN_URL")) {
         setTimeout(() => {
           load.classList.add('hidden'); resArea.classList.remove('hidden'); btn.disabled = false;
           document.getElementById('guestNameDisplay').innerText = query; document.getElementById('guestIdDisplay').innerText = "VIP-001";
@@ -508,6 +514,21 @@
         "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=800&q=80",
         "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80"
       ]);
+
+      // PERBAIKAN: Tampilkan section Video, Peta, & QRIS di mode simulasi demo
+      document.getElementById('videoSection').classList.remove('hidden');
+      document.getElementById('videoFrame').src = "https://www.youtube.com/embed/jfKfPfyJRdk"; 
+      
+      document.getElementById('locationSection').classList.remove('hidden');
+      document.getElementById('locationQrImg').src = "https://quickchart.io/qr?text=https://maps.google.com&size=200";
+      
+      document.getElementById('qrisContainer').classList.remove('hidden');
+      document.getElementById('qrisImg').src = "https://quickchart.io/qr?text=DUMMY_QRIS&size=200";
+      
+      document.getElementById('rekContainer').classList.remove('hidden');
+      document.getElementById('bankLabel').innerText = "Transfer Bank BCA";
+      document.getElementById('rekNumberDisplay').innerText = "1234567890";
+      document.getElementById('rekNameDisplay').innerText = "Romeo & Juliet";
     }
   </script>
 </body>
