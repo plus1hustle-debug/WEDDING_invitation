@@ -123,7 +123,8 @@
         <div class="fade-in">
           <div class="w-32 h-32 mx-auto rounded-full p-1 border-2 border-dashed theme-border-primary mb-4 relative">
              <div class="w-full h-full rounded-full bg-black/5 overflow-hidden flex items-center justify-center">
-                <svg class="w-16 h-16 text-black/20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <img id="groomPhotoDisplay" src="" alt="Mempelai Pria" class="w-full h-full object-cover hidden">
+                <svg id="groomSvgIcon" class="w-16 h-16 text-black/20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
              </div>
           </div>
           <h2 id="groomFullName" class="text-2xl font-bold theme-font-title theme-text-dark mb-1">Nama Pria</h2>
@@ -135,7 +136,8 @@
         <div class="fade-in">
           <div class="w-32 h-32 mx-auto rounded-full p-1 border-2 border-dashed theme-border-primary mb-4 relative">
              <div class="w-full h-full rounded-full bg-black/5 overflow-hidden flex items-center justify-center">
-                <svg class="w-16 h-16 text-black/20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <img id="bridePhotoDisplay" src="" alt="Mempelai Wanita" class="w-full h-full object-cover hidden">
+                <svg id="brideSvgIcon" class="w-16 h-16 text-black/20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
              </div>
           </div>
           <h2 id="brideFullName" class="text-2xl font-bold theme-font-title theme-text-dark mb-1">Nama Wanita</h2>
@@ -160,8 +162,12 @@
         <div class="theme-bg-card p-6 rounded-3xl shadow-lg border border-black/5 relative overflow-hidden">
           <div class="absolute top-0 right-0 w-20 h-20 bg-black/5 rounded-bl-[100px] pointer-events-none"></div>
           <h4 class="text-xl font-bold theme-font-title theme-text-dark mb-2">Akad Nikah</h4>
-          <div class="flex items-start gap-3 mb-3 text-sm theme-text-dark opacity-80">
+          <div class="flex items-start gap-3 mb-1 text-sm theme-text-dark opacity-80">
             <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span id="akadDateDisplay">-</span>
+          </div>
+          <div class="flex items-start gap-3 mb-3 text-sm theme-text-dark opacity-80">
+            <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             <span id="akadTimeDisplay">-</span>
           </div>
           <div class="flex items-start gap-3 text-sm theme-text-dark opacity-80">
@@ -173,8 +179,12 @@
         <div class="theme-bg-card p-6 rounded-3xl shadow-lg border border-black/5 relative overflow-hidden">
           <div class="absolute top-0 right-0 w-20 h-20 theme-bg-primary opacity-10 rounded-bl-[100px] pointer-events-none"></div>
           <h4 class="text-xl font-bold theme-font-title theme-text-primary mb-2">Resepsi</h4>
-          <div class="flex items-start gap-3 mb-3 text-sm theme-text-dark opacity-80">
+          <div class="flex items-start gap-3 mb-1 text-sm theme-text-dark opacity-80">
             <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span id="resepsiDateDisplay">-</span>
+          </div>
+          <div class="flex items-start gap-3 mb-3 text-sm theme-text-dark opacity-80">
+            <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             <span id="resepsiTimeDisplay">-</span>
           </div>
           <div class="flex items-start gap-3 text-sm theme-text-dark opacity-80">
@@ -320,7 +330,7 @@
 
   <script>
     // ⚠️ GANTI LINK DI BAWAH INI DENGAN URL GOOGLE APPS SCRIPT ANDA
-    const API_URL = "https://script.google.com/macros/s/AKfycbx034jduMJg8RMHD0zzirH-l4AhPMy3lDvuLIQhgUuKCLAJzwk70aeqmw7qZwdI7tifWg/exec"; 
+    const API_URL = "https://script.google.com/macros/s/AKfycbwX2i7UqezRqOUaUxrNCx3WiWikXFCTE4KsprIi8UDoG4o4hcTetguvvP-QbQUOCPn2DA/exec"; 
     const CACHE_KEY = 'guest_ticket_id_cache';
 
     // 1. Logika Buka Undangan (Menghilangkan Lock Scroll)
@@ -481,12 +491,18 @@
           
           if (data.groomFull) document.getElementById('groomFullName').innerText = data.groomFull;
           if (data.groomParents) document.getElementById('groomParents').innerText = data.groomParents;
+          if (data.groomPhoto) { document.getElementById('groomPhotoDisplay').src = data.groomPhoto; document.getElementById('groomPhotoDisplay').classList.remove('hidden'); document.getElementById('groomSvgIcon').classList.add('hidden'); }
+          
           if (data.brideFull) document.getElementById('brideFullName').innerText = data.brideFull;
           if (data.brideParents) document.getElementById('brideParents').innerText = data.brideParents;
+          if (data.bridePhoto) { document.getElementById('bridePhotoDisplay').src = data.bridePhoto; document.getElementById('bridePhotoDisplay').classList.remove('hidden'); document.getElementById('brideSvgIcon').classList.add('hidden'); }
           
-          if (data.akadTime) document.getElementById('akadTimeDisplay').innerHTML = data.akadTime.replace(" ", "<br>");
+          if (data.akadDate) document.getElementById('akadDateDisplay').innerText = data.akadDate;
+          if (data.akadTime) document.getElementById('akadTimeDisplay').innerText = data.akadTime;
           if (data.akadLoc) document.getElementById('akadLocDisplay').innerText = data.akadLoc;
-          if (data.resepsiTime) document.getElementById('resepsiTimeDisplay').innerHTML = data.resepsiTime.replace(" ", "<br>");
+          
+          if (data.resepsiDate) document.getElementById('resepsiDateDisplay').innerText = data.resepsiDate;
+          if (data.resepsiTime) document.getElementById('resepsiTimeDisplay').innerText = data.resepsiTime;
           if (data.resepsiLoc) document.getElementById('resepsiLocDisplay').innerText = data.resepsiLoc;
 
           if (data.igHandle) {
@@ -604,12 +620,20 @@
       document.getElementById('agendaTitle').innerText = "Mode Simulasi (Demo)";
       document.getElementById('groomFullName').innerText = "Romeo Montague, S.T.";
       document.getElementById('groomParents').innerText = "Putra dari Bpk. Lord Montague & Ibu Lady Montague";
+      document.getElementById('groomPhotoDisplay').src = "https://images.unsplash.com/photo-1557862921-37829c790f19?auto=format&fit=crop&w=400&q=80";
+      document.getElementById('groomPhotoDisplay').classList.remove('hidden'); document.getElementById('groomSvgIcon').classList.add('hidden');
+
       document.getElementById('brideFullName').innerText = "Juliet Capulet, S.E.";
       document.getElementById('brideParents').innerText = "Putri dari Bpk. Lord Capulet & Ibu Lady Capulet";
+      document.getElementById('bridePhotoDisplay').src = "https://images.unsplash.com/photo-1532413992378-f169ac26fff0?auto=format&fit=crop&w=400&q=80";
+      document.getElementById('bridePhotoDisplay').classList.remove('hidden'); document.getElementById('brideSvgIcon').classList.add('hidden');
       
-      document.getElementById('akadTimeDisplay').innerHTML = "2026-12-25<br>08:00 WIB";
+      document.getElementById('akadDateDisplay').innerText = "Jumat, 25 Desember 2026";
+      document.getElementById('akadTimeDisplay').innerText = "08:00 - 10:00 WIB";
       document.getElementById('akadLocDisplay').innerText = "Masjid Raya Istiqlal, Jakarta";
-      document.getElementById('resepsiTimeDisplay').innerHTML = "2026-12-25<br>11:00 WIB";
+
+      document.getElementById('resepsiDateDisplay').innerText = "Jumat, 25 Desember 2026";
+      document.getElementById('resepsiTimeDisplay').innerText = "11:00 - Selesai WIB";
       document.getElementById('resepsiLocDisplay').innerText = "Grand Ballroom Hotel Kempinski";
 
       document.getElementById('igHandleDisplay').innerText = "@romeojuliet_wedding";
