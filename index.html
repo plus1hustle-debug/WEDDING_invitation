@@ -37,7 +37,6 @@
 
     #coverOverlay {
       position: fixed; inset: 0; z-index: 50;
-      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') center/cover;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
     }
@@ -76,13 +75,23 @@
   </style>
 </head>
 
-<body class="theme-font-body antialiased overflow-hidden theme-bg-main">
+<body class="theme-font-body antialiased overflow-hidden theme-bg-main relative">
+
+  <!-- BACKGROUND UTAMA (Menutupi seluruh bagian belakang) -->
+  <div id="mainBgContainer" class="fixed inset-0 z-0 max-w-md mx-auto overflow-hidden hidden">
+     <div id="mainMedia" class="absolute inset-0 w-full h-full bg-gray-900"></div>
+     <!-- Overlay dengan warna tema agar teks bisa terbaca -->
+     <div class="absolute inset-0 theme-bg-main opacity-90 backdrop-blur-sm"></div>
+  </div>
 
   <audio id="bgmAudio" loop><source src="" id="bgmSource" type="audio/mpeg"></audio>
 
   <!-- COVER HALAMAN DEPAN -->
   <div id="coverOverlay">
-    <div class="text-center text-white px-6">
+    <div id="coverMedia" class="absolute inset-0 z-[-2] overflow-hidden bg-gray-900"></div>
+    <div class="absolute inset-0 bg-black/60 z-[-1]"></div> <!-- Overlay Gelap -->
+
+    <div class="text-center text-white px-6 relative z-10">
       <p class="text-sm tracking-widest uppercase mb-3 opacity-80 theme-font-body" id="agendaTitle">The Wedding Of</p>
       <h1 class="text-6xl mb-8 drop-shadow-2xl theme-font-script theme-text-primary" id="coverNames">Romeo & Juliet</h1>
       <p class="text-sm mb-2 opacity-90 theme-font-body">Kpd Yth. Bapak/Ibu/Saudara/i</p>
@@ -95,7 +104,7 @@
   </div>
 
   <!-- KONTEN UTAMA WEB -->
-  <div id="mainContent" class="max-w-md mx-auto min-h-screen relative shadow-2xl pb-24 theme-bg-main">
+  <div id="mainContent" class="max-w-md mx-auto min-h-screen relative shadow-2xl pb-24 z-10 theme-bg-main transition-colors duration-500">
     <div id="leafContainer" class="fixed inset-0 pointer-events-none z-0 overflow-hidden max-w-md mx-auto opacity-60"></div>
 
     <!-- HERO & AI COPYWRITING SECTION -->
@@ -330,10 +339,44 @@
 
   <script>
     // ⚠️ GANTI LINK DI BAWAH INI DENGAN URL GOOGLE APPS SCRIPT ANDA
-    const API_URL = "https://script.google.com/macros/s/AKfycbwX2i7UqezRqOUaUxrNCx3WiWikXFCTE4KsprIi8UDoG4o4hcTetguvvP-QbQUOCPn2DA/exec"; 
+    const API_URL = "https://script.google.com/macros/s/AKfycbxaSvxShNAXKXYyhCrJRhgoTQYDwVO78BkUbNRpaIqgtOsxJTIbX1vaUFn6ugSOgZXBkw/exec"; 
     const CACHE_KEY = 'guest_ticket_id_cache';
 
-    // 1. Logika Buka Undangan (Menghilangkan Lock Scroll)
+    // FUNGSI BARU: Mesin Parser untuk Gambar / Video (MP4 / YouTube)
+    function setMediaBackground(containerId, url) {
+      const container = document.getElementById(containerId);
+      if (!container || !url || url.includes('KOSONGKAN')) return;
+      
+      container.innerHTML = ''; // Hapus isi sebelumnya
+
+      const isVideo = url.match(/\.(mp4|webm|ogg)$/i);
+      const isYoutube = url.match(/(youtube\.com|youtu\.be)/i);
+
+      if (isYoutube) {
+        let videoId = '';
+        if (url.includes('v=')) videoId = url.split('v=')[1].split('&')[0];
+        else if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split('?')[0];
+        
+        if (videoId) {
+          container.innerHTML = `
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[350%] h-[350%] pointer-events-none">
+              <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=${videoId}&playsinline=1" 
+                      class="w-full h-full" frameborder="0" allow="autoplay; fullscreen"></iframe>
+            </div>`;
+        }
+      } else if (isVideo) {
+        container.innerHTML = `<video src="${url}" autoplay loop muted playsinline class="w-full h-full object-cover opacity-80"></video>`;
+      } else {
+        let imgUrl = url;
+        if (url.includes("drive.google.com/file/d/")) {
+           let match = url.match(/\/d\/([-\w]+)/);
+           if(match) imgUrl = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
+        }
+        container.innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover">`;
+      }
+    }
+
+    // Logika Buka Undangan
     function openInvitation() {
       document.body.classList.remove('overflow-hidden');
       document.getElementById('coverOverlay').classList.add('slide-up');
@@ -341,7 +384,7 @@
       if(bgm.src && bgm.src !== window.location.href) { bgm.play().catch(e => console.log("Auto-play diblokir")); }
     }
 
-    // 2. Logika Hitung Mundur (Countdown)
+    // Logika Hitung Mundur (Countdown)
     function initCountdown(targetDateStr) {
       const safeDateStr = targetDateStr.replace(/-/g, '/');
       const targetDate = new Date(safeDateStr).getTime();
@@ -371,7 +414,7 @@
       }, 1000);
     }
 
-    // 3. Logika Galeri 3D Carousel (Swiper & Fancybox)
+    // Logika Galeri 3D
     function renderGallery(urls) {
       if(!urls || urls.length === 0) return;
       document.getElementById('gallerySection').classList.remove('hidden');
@@ -482,7 +525,20 @@
           }
 
           if (data.agendaName) document.getElementById('agendaTitle').innerText = data.agendaName;
-          if (data.coverUrl) document.getElementById('coverOverlay').style.backgroundImage = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('${data.coverUrl}')`;
+          
+          // INJEKSI BACKGROUND 1: COVER
+          if (data.coverUrl) {
+             setMediaBackground('coverMedia', data.coverUrl);
+          }
+          
+          // INJEKSI BACKGROUND 2: MAIN CONTENT
+          if (data.mainBgUrl) {
+             setMediaBackground('mainMedia', data.mainBgUrl);
+             document.getElementById('mainBgContainer').classList.remove('hidden');
+             // Ubah #mainContent menjadi tembus pandang (transparent) agar Background Media terlihat
+             document.getElementById('mainContent').classList.remove('theme-bg-main', 'shadow-2xl');
+             document.getElementById('mainContent').classList.add('bg-transparent', 'shadow-none');
+          }
           
           if (data.groomNick && data.brideNick) {
              document.getElementById('coverNames').innerHTML = `${data.groomNick} & ${data.brideNick}`;
@@ -497,10 +553,8 @@
           if (data.brideParents) document.getElementById('brideParents').innerText = data.brideParents;
           if (data.bridePhoto) { document.getElementById('bridePhotoDisplay').src = data.bridePhoto; document.getElementById('bridePhotoDisplay').classList.remove('hidden'); document.getElementById('brideSvgIcon').classList.add('hidden'); }
           
-          // Fungsi validasi ketat untuk memastikan data benar-benar terisi (bukan sekadar spasi atau tanda hubung)
           const isValid = (val) => val && val.toString().trim() !== "" && val.toString().trim() !== "-" && !val.toString().toLowerCase().includes("kosong");
 
-          // Logika untuk menyembunyikan jadwal Akad jika tidak diisi
           const showAkad = isValid(data.akadDate) || isValid(data.akadTime) || isValid(data.akadLoc);
           if (showAkad) {
             document.getElementById('akadCard').classList.remove('hidden');
@@ -511,7 +565,6 @@
             document.getElementById('akadCard').classList.add('hidden');
           }
 
-          // Logika untuk menyembunyikan jadwal Resepsi jika tidak diisi
           const showResepsi = isValid(data.resepsiDate) || isValid(data.resepsiTime) || isValid(data.resepsiLoc);
           if (showResepsi) {
             document.getElementById('resepsiCard').classList.remove('hidden');
@@ -522,7 +575,6 @@
             document.getElementById('resepsiCard').classList.add('hidden');
           }
 
-          // Sembunyikan seluruh Judul "Rangkaian Acara" jika keduanya (Akad & Resepsi) kosong
           const jadwalSection = document.getElementById('jadwalSection');
           if (jadwalSection) {
             if (!showAkad && !showResepsi) jadwalSection.classList.add('hidden');
@@ -582,14 +634,11 @@
 
     function toggleEnvelope() { document.getElementById('envelopeModal').classList.toggle('hidden'); }
     
-    // PERBAIKAN: Mengganti navigator.clipboard.writeText dengan document.execCommand('copy') untuk dukungan iFrame/Canvas
     function copyRekening() { 
       const textToCopy = document.getElementById('rekNumberDisplay').innerText;
       
       const textArea = document.createElement("textarea");
       textArea.value = textToCopy;
-      
-      // Mencegah scroll tiba-tiba
       textArea.style.top = "0";
       textArea.style.left = "0";
       textArea.style.position = "fixed";
@@ -600,16 +649,11 @@
       
       try {
         const successful = document.execCommand('copy');
-        if (successful) {
-          showToast("Nomor rekening tersalin!");
-        } else {
-          showToast("Gagal menyalin nomor rekening.");
-        }
+        if (successful) showToast("Nomor rekening tersalin!");
+        else showToast("Gagal menyalin nomor rekening.");
       } catch (err) {
-        console.error('Oops, tidak dapat menyalin', err);
         showToast("Gagal menyalin nomor rekening.");
       }
-      
       document.body.removeChild(textArea);
     }
 
@@ -672,6 +716,16 @@
       applyAITheme(mockupAiTheme);
 
       document.getElementById('agendaTitle').innerText = "Mode Simulasi (Demo)";
+      
+      // MOCKUP MEDIA: Sampul Cover (Gambar/Video)
+      setMediaBackground('coverMedia', "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1000&q=80");
+      
+      // MOCKUP MEDIA: Konten Utama (Gambar/Video/YouTube)
+      setMediaBackground('mainMedia', "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=1000&q=80"); 
+      document.getElementById('mainBgContainer').classList.remove('hidden');
+      document.getElementById('mainContent').classList.remove('theme-bg-main', 'shadow-2xl');
+      document.getElementById('mainContent').classList.add('bg-transparent', 'shadow-none');
+
       document.getElementById('groomFullName').innerText = "Romeo Montague, S.T.";
       document.getElementById('groomParents').innerText = "Putra dari Bpk. Lord Montague & Ibu Lady Montague";
       document.getElementById('groomPhotoDisplay').src = "https://images.unsplash.com/photo-1557862921-37829c790f19?auto=format&fit=crop&w=400&q=80";
@@ -682,7 +736,6 @@
       document.getElementById('bridePhotoDisplay').src = "https://images.unsplash.com/photo-1532413992378-f169ac26fff0?auto=format&fit=crop&w=400&q=80";
       document.getElementById('bridePhotoDisplay').classList.remove('hidden'); document.getElementById('brideSvgIcon').classList.add('hidden');
       
-      // MOCKUP: Menampilkan jadwal jika data simulasi diaktifkan
       document.getElementById('akadCard').classList.remove('hidden');
       document.getElementById('akadDateDisplay').innerText = "Jumat, 25 Desember 2026";
       document.getElementById('akadTimeDisplay').innerText = "08:00 - 10:00 WIB";
