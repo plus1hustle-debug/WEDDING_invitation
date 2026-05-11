@@ -159,7 +159,7 @@
       <h3 class="text-3xl mb-8 font-bold text-center theme-font-title theme-text-primary">Rangkaian Acara</h3>
       
       <div class="flex flex-col gap-6">
-        <div class="theme-bg-card p-6 rounded-3xl shadow-lg border border-black/5 relative overflow-hidden">
+        <div id="akadCard" class="theme-bg-card p-6 rounded-3xl shadow-lg border border-black/5 relative overflow-hidden hidden">
           <div class="absolute top-0 right-0 w-20 h-20 bg-black/5 rounded-bl-[100px] pointer-events-none"></div>
           <h4 class="text-xl font-bold theme-font-title theme-text-dark mb-2">Akad Nikah</h4>
           <div class="flex items-start gap-3 mb-1 text-sm theme-text-dark opacity-80">
@@ -176,7 +176,7 @@
           </div>
         </div>
 
-        <div class="theme-bg-card p-6 rounded-3xl shadow-lg border border-black/5 relative overflow-hidden">
+        <div id="resepsiCard" class="theme-bg-card p-6 rounded-3xl shadow-lg border border-black/5 relative overflow-hidden hidden">
           <div class="absolute top-0 right-0 w-20 h-20 theme-bg-primary opacity-10 rounded-bl-[100px] pointer-events-none"></div>
           <h4 class="text-xl font-bold theme-font-title theme-text-primary mb-2">Resepsi</h4>
           <div class="flex items-start gap-3 mb-1 text-sm theme-text-dark opacity-80">
@@ -497,13 +497,21 @@
           if (data.brideParents) document.getElementById('brideParents').innerText = data.brideParents;
           if (data.bridePhoto) { document.getElementById('bridePhotoDisplay').src = data.bridePhoto; document.getElementById('bridePhotoDisplay').classList.remove('hidden'); document.getElementById('brideSvgIcon').classList.add('hidden'); }
           
-          if (data.akadDate) document.getElementById('akadDateDisplay').innerText = data.akadDate;
-          if (data.akadTime) document.getElementById('akadTimeDisplay').innerText = data.akadTime;
-          if (data.akadLoc) document.getElementById('akadLocDisplay').innerText = data.akadLoc;
-          
-          if (data.resepsiDate) document.getElementById('resepsiDateDisplay').innerText = data.resepsiDate;
-          if (data.resepsiTime) document.getElementById('resepsiTimeDisplay').innerText = data.resepsiTime;
-          if (data.resepsiLoc) document.getElementById('resepsiLocDisplay').innerText = data.resepsiLoc;
+          // Logika untuk menyembunyikan jadwal Akad jika tidak diisi
+          if (data.akadDate || data.akadTime || data.akadLoc) {
+            document.getElementById('akadCard').classList.remove('hidden');
+            if (data.akadDate) document.getElementById('akadDateDisplay').innerText = data.akadDate;
+            if (data.akadTime) document.getElementById('akadTimeDisplay').innerText = data.akadTime;
+            if (data.akadLoc) document.getElementById('akadLocDisplay').innerText = data.akadLoc;
+          }
+
+          // Logika untuk menyembunyikan jadwal Resepsi jika tidak diisi
+          if (data.resepsiDate || data.resepsiTime || data.resepsiLoc) {
+            document.getElementById('resepsiCard').classList.remove('hidden');
+            if (data.resepsiDate) document.getElementById('resepsiDateDisplay').innerText = data.resepsiDate;
+            if (data.resepsiTime) document.getElementById('resepsiTimeDisplay').innerText = data.resepsiTime;
+            if (data.resepsiLoc) document.getElementById('resepsiLocDisplay').innerText = data.resepsiLoc;
+          }
 
           if (data.igHandle) {
              document.getElementById('igHandleDisplay').innerText = data.igHandle;
@@ -557,7 +565,37 @@
     });
 
     function toggleEnvelope() { document.getElementById('envelopeModal').classList.toggle('hidden'); }
-    function copyRekening() { navigator.clipboard.writeText(document.getElementById('rekNumberDisplay').innerText).then(() => showToast("Nomor rekening tersalin!")); }
+    
+    // PERBAIKAN: Mengganti navigator.clipboard.writeText dengan document.execCommand('copy') untuk dukungan iFrame/Canvas
+    function copyRekening() { 
+      const textToCopy = document.getElementById('rekNumberDisplay').innerText;
+      
+      const textArea = document.createElement("textarea");
+      textArea.value = textToCopy;
+      
+      // Mencegah scroll tiba-tiba
+      textArea.style.top = "0";
+      textArea.style.left = "0";
+      textArea.style.position = "fixed";
+      
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          showToast("Nomor rekening tersalin!");
+        } else {
+          showToast("Gagal menyalin nomor rekening.");
+        }
+      } catch (err) {
+        console.error('Oops, tidak dapat menyalin', err);
+        showToast("Gagal menyalin nomor rekening.");
+      }
+      
+      document.body.removeChild(textArea);
+    }
 
     async function performSearch() {
       const query = document.getElementById('searchInput').value.trim();
@@ -628,10 +666,13 @@
       document.getElementById('bridePhotoDisplay').src = "https://images.unsplash.com/photo-1532413992378-f169ac26fff0?auto=format&fit=crop&w=400&q=80";
       document.getElementById('bridePhotoDisplay').classList.remove('hidden'); document.getElementById('brideSvgIcon').classList.add('hidden');
       
+      // MOCKUP: Menampilkan jadwal jika data simulasi diaktifkan
+      document.getElementById('akadCard').classList.remove('hidden');
       document.getElementById('akadDateDisplay').innerText = "Jumat, 25 Desember 2026";
       document.getElementById('akadTimeDisplay').innerText = "08:00 - 10:00 WIB";
       document.getElementById('akadLocDisplay').innerText = "Masjid Raya Istiqlal, Jakarta";
 
+      document.getElementById('resepsiCard').classList.remove('hidden');
       document.getElementById('resepsiDateDisplay').innerText = "Jumat, 25 Desember 2026";
       document.getElementById('resepsiTimeDisplay').innerText = "11:00 - Selesai WIB";
       document.getElementById('resepsiLocDisplay').innerText = "Grand Ballroom Hotel Kempinski";
