@@ -586,8 +586,10 @@
              document.getElementById('igContainer').classList.remove('hidden');
           }
 
-          let targetCountdown = data.akadTime || data.resepsiTime || data.eventDateTime;
-          if (targetCountdown) initCountdown(targetCountdown);
+          // PERBAIKAN: Hanya gunakan data.eventDateTime (Waktu Hitung Mundur) yang formatnya valid YYYY-MM-DD
+          if (data.eventDateTime) {
+             initCountdown(data.eventDateTime);
+          }
           
           if (data.bgmUrl) { document.getElementById('bgmSource').src = data.bgmUrl; document.getElementById('bgmAudio').load(); }
           if (data.gallery && data.gallery.length > 0) renderGallery(data.gallery);
