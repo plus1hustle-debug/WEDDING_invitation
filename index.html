@@ -155,7 +155,7 @@
     </section>
 
     <!-- JADWAL ACARA -->
-    <section class="py-12 px-6 z-10 relative">
+    <section id="jadwalSection" class="py-12 px-6 z-10 relative">
       <h3 class="text-3xl mb-8 font-bold text-center theme-font-title theme-text-primary">Rangkaian Acara</h3>
       
       <div class="flex flex-col gap-6">
@@ -497,20 +497,36 @@
           if (data.brideParents) document.getElementById('brideParents').innerText = data.brideParents;
           if (data.bridePhoto) { document.getElementById('bridePhotoDisplay').src = data.bridePhoto; document.getElementById('bridePhotoDisplay').classList.remove('hidden'); document.getElementById('brideSvgIcon').classList.add('hidden'); }
           
+          // Fungsi validasi ketat untuk memastikan data benar-benar terisi (bukan sekadar spasi atau tanda hubung)
+          const isValid = (val) => val && val.toString().trim() !== "" && val.toString().trim() !== "-" && !val.toString().toLowerCase().includes("kosong");
+
           // Logika untuk menyembunyikan jadwal Akad jika tidak diisi
-          if (data.akadDate || data.akadTime || data.akadLoc) {
+          const showAkad = isValid(data.akadDate) || isValid(data.akadTime) || isValid(data.akadLoc);
+          if (showAkad) {
             document.getElementById('akadCard').classList.remove('hidden');
-            if (data.akadDate) document.getElementById('akadDateDisplay').innerText = data.akadDate;
-            if (data.akadTime) document.getElementById('akadTimeDisplay').innerText = data.akadTime;
-            if (data.akadLoc) document.getElementById('akadLocDisplay').innerText = data.akadLoc;
+            if (isValid(data.akadDate)) document.getElementById('akadDateDisplay').innerText = data.akadDate;
+            if (isValid(data.akadTime)) document.getElementById('akadTimeDisplay').innerText = data.akadTime;
+            if (isValid(data.akadLoc)) document.getElementById('akadLocDisplay').innerText = data.akadLoc;
+          } else {
+            document.getElementById('akadCard').classList.add('hidden');
           }
 
           // Logika untuk menyembunyikan jadwal Resepsi jika tidak diisi
-          if (data.resepsiDate || data.resepsiTime || data.resepsiLoc) {
+          const showResepsi = isValid(data.resepsiDate) || isValid(data.resepsiTime) || isValid(data.resepsiLoc);
+          if (showResepsi) {
             document.getElementById('resepsiCard').classList.remove('hidden');
-            if (data.resepsiDate) document.getElementById('resepsiDateDisplay').innerText = data.resepsiDate;
-            if (data.resepsiTime) document.getElementById('resepsiTimeDisplay').innerText = data.resepsiTime;
-            if (data.resepsiLoc) document.getElementById('resepsiLocDisplay').innerText = data.resepsiLoc;
+            if (isValid(data.resepsiDate)) document.getElementById('resepsiDateDisplay').innerText = data.resepsiDate;
+            if (isValid(data.resepsiTime)) document.getElementById('resepsiTimeDisplay').innerText = data.resepsiTime;
+            if (isValid(data.resepsiLoc)) document.getElementById('resepsiLocDisplay').innerText = data.resepsiLoc;
+          } else {
+            document.getElementById('resepsiCard').classList.add('hidden');
+          }
+
+          // Sembunyikan seluruh Judul "Rangkaian Acara" jika keduanya (Akad & Resepsi) kosong
+          const jadwalSection = document.getElementById('jadwalSection');
+          if (jadwalSection) {
+            if (!showAkad && !showResepsi) jadwalSection.classList.add('hidden');
+            else jadwalSection.classList.remove('hidden');
           }
 
           if (data.igHandle) {
